@@ -16,10 +16,26 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+
     role: {
       type: String,
       enum: ["student", "admin"],
       default: "student",
+    },
+
+    college: {
+      type: String,
+      default: "",
+    },
+
+    profilePhoto: {
+      type: String,
+      default: "",
     },
 
     blocked: {
