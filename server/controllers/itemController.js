@@ -3,7 +3,10 @@ const Item = require("../models/Item");
 // Create a new lost/found item
 const createItem = async (req, res) => {
   try {
-    const item = await Item.create(req.body);
+    const item = await Item.create({
+      ...req.body,
+      postedBy: req.user.id,
+    });
 
     res.status(201).json({
       success: true,
@@ -17,7 +20,6 @@ const createItem = async (req, res) => {
     });
   }
 };
-
 // Get all items
 const getAllItems = async (req, res) => {
   try {

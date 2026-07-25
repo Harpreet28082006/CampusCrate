@@ -8,9 +8,10 @@ const {
   updateItem,
   deleteItem,
 } = require("../controllers/itemController");
-// Create a new lost/found item
-router.post("/", createItem);
 
+const { protect } = require("../middleware/authMiddleware");
+// Create a new lost/found item
+router.post("/", protect, createItem);
 // Get all items
 router.get("/", getAllItems);
 
