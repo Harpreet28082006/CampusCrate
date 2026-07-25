@@ -17,6 +17,6 @@ router.get("/", getAllItems);
 
 // Get a single item by ID
 router.get("/:id", getItemById);
-router.put("/:id", updateItem);
-router.delete("/:id", deleteItem);
+router.put("/:id", protect, updateItem);
+router.delete("/:id", protect, deleteItem);
 module.exports = router;
