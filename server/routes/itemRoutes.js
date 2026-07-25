@@ -5,8 +5,9 @@ const {
   createItem,
   getAllItems,
   getItemById,
+  updateItem,
+  deleteItem,
 } = require("../controllers/itemController");
-
 // Create a new lost/found item
 router.post("/", createItem);
 
@@ -15,5 +16,6 @@ router.get("/", getAllItems);
 
 // Get a single item by ID
 router.get("/:id", getItemById);
-
+router.put("/:id", updateItem);
+router.delete("/:id", deleteItem);
 module.exports = router;
