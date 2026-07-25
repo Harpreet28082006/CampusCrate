@@ -35,8 +35,32 @@ const getAllItems = async (req, res) => {
     });
   }
 };
+// Get single item by ID
+const getItemById = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      item,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   createItem,
   getAllItems,
+  getItemById,
 };
