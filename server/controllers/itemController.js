@@ -4,9 +4,10 @@ const Item = require("../models/Item");
 const createItem = async (req, res) => {
   try {
     const item = await Item.create({
-      ...req.body,
-      postedBy: req.user.id,
-    });
+  ...req.body,
+  photoUrl: req.file ? req.file.path : "",
+  postedBy: req.user.id,
+});
 
     res.status(201).json({
       success: true,

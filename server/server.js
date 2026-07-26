@@ -10,7 +10,7 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 const itemRoutes = require("./routes/itemRoutes");
 const authRoutes = require("./routes/authRoutes");
-
+const claimRoutes = require("./routes/claimRoutes");
 const app = express();
 
 // Connect to MongoDB
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 // Item Routes
 app.use("/api/items", itemRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/claims", claimRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

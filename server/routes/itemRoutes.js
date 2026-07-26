@@ -10,8 +10,10 @@ const {
 } = require("../controllers/itemController");
 
 const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
+
 // Create a new lost/found item
-router.post("/", protect, createItem);
+router.post("/", protect, upload.single("photo"), createItem);
 // Get all items
 router.get("/", getAllItems);
 
