@@ -1,0 +1,25 @@
+.item-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    transition:.3s;
+}
+
+.item-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.item-card h3{
+    margin-bottom:10px;
+}
+
+.item-card p{
+    color:var(--gray);
+    margin-bottom:10px;
+}
+
+.item-card button{
+    width:100%;
+}
