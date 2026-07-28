@@ -2,6 +2,9 @@ const Item = require("../models/Item");
 
 // Create a new lost/found item
 const createItem = async (req, res) => {
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
+
   try {
     const item = await Item.create({
       ...req.body,
@@ -15,6 +18,7 @@ const createItem = async (req, res) => {
       item,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -25,13 +29,71 @@ const createItem = async (req, res) => {
 // Get all items
 const getAllItems = async (req, res) => {
   try {
-    const items = await Item.find().sort({ createdAt: -1 });
+    const { search, type, category, location, status } = req.query;
+
+    let filter = {};
+
+    // Search across multiple fields
+if (search) {
+  filter.$or = [
+    {
+      title: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+    {
+      description: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+    {
+      location: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+    {
+      category: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+  ];
+}
+
+    // Filter by type
+    if (type) {
+      filter.type = type;
+    }
+
+    // Filter by category
+    if (category) {
+      filter.category = category;
+    }
+
+    // Filter by location
+    if (location) {
+      filter.location = {
+        $regex: location,
+        $options: "i",
+      };
+    }
+
+    // Filter by status
+    if (status) {
+      filter.status = status;
+    }
+
+    const items = await Item.find(filter).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
       count: items.length,
       items,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -163,6 +225,7 @@ const deleteItem = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   createItem,
