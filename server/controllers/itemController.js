@@ -28,7 +28,7 @@ const createItem = async (req, res) => {
 // Get all items
 const getAllItems = async (req, res) => {
   try {
-    const { search, type, category, location, status } = req.query;
+    const { search, type, category, location, status, page = 1, limit = 10 } = req.query;
 
     let filter = {};
 
@@ -85,13 +85,22 @@ if (search) {
       filter.status = status;
     }
 
-    const items = await Item.find(filter).sort({ createdAt: -1 });
+    const skip = (page - 1) * limit;
 
-    res.status(200).json({
-      success: true,
-      count: items.length,
-      items,
-    });
+const items = await Item.find(filter)
+  .sort({ createdAt: -1 })
+  .skip(skip)
+  .limit(Number(limit));
+
+   const totalItems = await Item.countDocuments(filter);
+
+res.status(200).json({
+  success: true,
+  currentPage: Number(page),
+  totalPages: Math.ceil(totalItems / limit),
+  totalItems,
+  items,
+});
 
   } catch (error) {
     res.status(500).json({
