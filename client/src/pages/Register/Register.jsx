@@ -3,12 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Button from "../../components/Button/Button";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    college: "",
   });
 
   const handleChange = (e) => {
@@ -22,31 +24,40 @@ function Login() {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+      await axios.post(
+        "http://localhost:5000/api/auth/register",
         formData
       );
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      alert("Registration Successful");
 
-      alert("Login Successful");
-
-      navigate("/dashboard");
+      navigate("/login");
     } catch (err) {
-      alert(err.response?.data?.message || "Login Failed");
+      alert(err.response?.data?.message || "Registration Failed");
     }
   };
 
   return (
     <section>
-      <h1>Login</h1>
+      <h1>Register</h1>
 
       <form onSubmit={handleSubmit}>
         <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+
+        <br />
+        <br />
+
+        <input
           type="email"
           name="email"
-          placeholder="Enter Email"
+          placeholder="College Email"
           value={formData.email}
           onChange={handleChange}
           required
@@ -58,7 +69,7 @@ function Login() {
         <input
           type="password"
           name="password"
-          placeholder="Enter Password"
+          placeholder="Password"
           value={formData.password}
           onChange={handleChange}
           required
@@ -67,8 +78,19 @@ function Login() {
         <br />
         <br />
 
+        <input
+          type="text"
+          name="college"
+          placeholder="College Name"
+          value={formData.college}
+          onChange={handleChange}
+        />
+
+        <br />
+        <br />
+
         <Button
-          text="Login"
+          text="Register"
           type="submit"
         />
       </form>
@@ -76,11 +98,11 @@ function Login() {
       <br />
 
       <p>
-        Don't have an account?{" "}
-        <Link to="/register">Register</Link>
+        Already have an account?{" "}
+        <Link to="/login">Login</Link>
       </p>
     </section>
   );
 }
 
-export default Login;
+export default Register;

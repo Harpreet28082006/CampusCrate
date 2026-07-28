@@ -2,7 +2,7 @@ nav{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:18px 5%;
+    padding:18px 6%;
     background:var(--white);
     border-bottom:1px solid var(--border);
     position:sticky;
@@ -11,23 +11,60 @@ nav{
 }
 
 nav h2{
-    color:var(--primary);
-    font-size:28px;
     margin:0;
+    color:var(--primary);
+    font-size:30px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 nav ul{
     display:flex;
-    gap:30px;
     align-items:center;
+    gap:25px;
+    list-style:none;
+    margin:0;
+    padding:0;
 }
 
-nav ul li{
+nav ul li a{
+    text-decoration:none;
+    color:var(--black);
     font-size:16px;
     font-weight:500;
-    transition:.3s;
+    transition:0.3s;
 }
 
-nav ul li:hover{
+nav ul li a:hover{
     color:var(--primary);
+}
+
+nav button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.3s;
+}
+
+nav button:hover{
+    opacity:0.9;
+}
+
+@media(max-width:768px){
+
+    nav{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:15px;
+    }
+
 }

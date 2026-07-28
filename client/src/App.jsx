@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PostLost from "./pages/PostLost/PostLost";
 import PostFound from "./pages/PostFound/PostFound";
@@ -24,6 +25,7 @@ function App() {
         </Route>
 
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<Admin />} />
 

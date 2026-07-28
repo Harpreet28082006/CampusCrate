@@ -1,23 +1,63 @@
 import { Link } from "react-router-dom";
 
 function Dashboard() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
-    <section>
-      <h1>User Dashboard</h1>
+    <section className="dashboard">
 
-      <ul>
-        <li>
-          <Link to="/post-lost">Post Lost Item</Link>
-        </li>
+      <h1>Welcome {user?.name || "User"} 👋</h1>
 
-        <li>
-          <Link to="/post-found">Post Found Item</Link>
-        </li>
+      <p>Manage your lost and found items from one place.</p>
 
-        <li>My Posts</li>
+      <br />
 
-        <li>Profile</li>
-      </ul>
+      <div className="dashboard-stats">
+
+        <div className="card">
+          <h2>0</h2>
+          <p>Total Posts</p>
+        </div>
+
+        <div className="card">
+          <h2>0</h2>
+          <p>Lost Items</p>
+        </div>
+
+        <div className="card">
+          <h2>0</h2>
+          <p>Found Items</p>
+        </div>
+
+      </div>
+
+      <br />
+
+      <div className="dashboard-actions">
+
+        <Link to="/post-lost">
+          <button>+ Report Lost Item</button>
+        </Link>
+
+        <Link to="/post-found">
+          <button>+ Report Found Item</button>
+        </Link>
+
+      </div>
+
+      <br />
+
+      <h2>My Recent Posts</h2>
+
+      <div className="recent-posts">
+
+        <div className="card">
+          <h3>No Posts Yet</h3>
+          <p>Your lost and found items will appear here.</p>
+        </div>
+
+      </div>
+
     </section>
   );
 }

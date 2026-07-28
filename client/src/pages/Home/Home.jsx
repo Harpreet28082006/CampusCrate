@@ -30,11 +30,11 @@ function Home() {
   return (
     <>
       <section className="hero">
-        <h1>Campus Lost & Found</h1>
+        <h1>Campus Lost & Found System</h1>
 
         <p>
-          Report lost items, discover found belongings, and help students reconnect
-          with their valuables through one simple platform.
+          A simple platform where students can report lost items, post found
+          belongings, and help return valuable items to their rightful owners.
         </p>
 
         <div className="hero-buttons">
@@ -51,7 +51,14 @@ function Home() {
       </section>
 
       <section className="items-section">
-        <h2>Recently Added Items</h2>
+
+        <div className="section-heading">
+          <h2>Recently Added Items</h2>
+
+          <Link to="/dashboard">
+            View All
+          </Link>
+        </div>
 
         <div className="items-grid">
           {items.map((item) => (
@@ -64,6 +71,7 @@ function Home() {
             />
           ))}
         </div>
+
       </section>
     </>
   );
