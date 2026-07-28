@@ -32,13 +32,35 @@ const getAllItems = async (req, res) => {
 
     let filter = {};
 
-    // Search by title
-    if (search) {
-      filter.title = {
+    // Search across multiple fields
+if (search) {
+  filter.$or = [
+    {
+      title: {
         $regex: search,
         $options: "i",
-      };
-    }
+      },
+    },
+    {
+      description: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+    {
+      location: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+    {
+      category: {
+        $regex: search,
+        $options: "i",
+      },
+    },
+  ];
+}
 
     // Filter by type
     if (type) {
