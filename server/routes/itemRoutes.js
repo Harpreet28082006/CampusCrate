@@ -15,6 +15,7 @@ const upload = require("../middleware/upload");
 
 // Create a new lost/found item
 router.post("/", protect, upload.single("photo"), createItem);
+
 // Get all items
 router.get("/", getAllItems);
 
@@ -23,6 +24,11 @@ router.get("/my-items", protect, getMyItems);
 
 // Get a single item by ID
 router.get("/:id", getItemById);
+
+// Update an item
 router.put("/:id", protect, updateItem);
+
+// Delete an item
 router.delete("/:id", protect, deleteItem);
+
 module.exports = router;

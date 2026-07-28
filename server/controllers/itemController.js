@@ -25,6 +25,7 @@ const createItem = async (req, res) => {
     });
   }
 };
+
 // Get all items
 const getAllItems = async (req, res) => {
   try {
@@ -109,6 +110,27 @@ res.status(200).json({
     });
   }
 };
+
+// Get logged-in user's items
+const getMyItems = async (req, res) => {
+  try {
+    const items = await Item.find({
+      postedBy: req.user.id,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: items.length,
+      items,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Get single item by ID
 const getItemById = async (req, res) => {
   try {
@@ -176,6 +198,7 @@ const updateItem = async (req, res) => {
     });
   }
 };
+
 // Delete an item
 const deleteItem = async (req, res) => {
   try {
@@ -203,24 +226,6 @@ const deleteItem = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Item deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-const getMyItems = async (req, res) => {
-  try {
-    const items = await Item.find({
-      postedBy: req.user.id,
-    }).sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: items.length,
-      items,
     });
   } catch (error) {
     res.status(500).json({

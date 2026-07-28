@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PostLost from "./pages/PostLost/PostLost";
 import PostFound from "./pages/PostFound/PostFound";
@@ -16,16 +17,19 @@ function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* Pages with Navbar */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/post-lost" element={<PostLost />} />
           <Route path="/post-found" element={<PostFound />} />
           <Route path="/item/:id" element={<ItemDetails />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
 
+        {/* Pages without Navbar */}
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="*" element={<NotFound />} />
 

@@ -1,23 +1,108 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import "./Dashboard.css";
 
 function Dashboard() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  async function fetchItems() {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:5000/api/items/my-items",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setItems(data.items);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const totalPosts = items.length;
+  const lostItems = items.filter((item) => item.type === "lost").length;
+  const foundItems = items.filter((item) => item.type === "found").length;
+
   return (
-    <section>
-      <h1>User Dashboard</h1>
+    <section className="dashboard">
+      <h1>Welcome {user?.name || "User"} 👋</h1>
 
-      <ul>
-        <li>
-          <Link to="/post-lost">Post Lost Item</Link>
-        </li>
+      <p>Manage your lost and found items from one place.</p>
 
-        <li>
-          <Link to="/post-found">Post Found Item</Link>
-        </li>
+      <div className="dashboard-stats">
+        <div className="card">
+          <h2>{loading ? "..." : totalPosts}</h2>
+          <p>Total Posts</p>
+        </div>
 
-        <li>My Posts</li>
+        <div className="card">
+          <h2>{loading ? "..." : lostItems}</h2>
+          <p>Lost Items</p>
+        </div>
 
-        <li>Profile</li>
-      </ul>
+        <div className="card">
+          <h2>{loading ? "..." : foundItems}</h2>
+          <p>Found Items</p>
+        </div>
+      </div>
+
+      <div className="dashboard-actions">
+        <Link to="/post-lost">
+          <button>+ Report Lost Item</button>
+        </Link>
+
+        <Link to="/post-found">
+          <button>+ Report Found Item</button>
+        </Link>
+      </div>
+
+      <h2>My Recent Posts</h2>
+
+      <div className="recent-posts">
+        {loading ? (
+          <div className="card">
+            <h3>Loading...</h3>
+          </div>
+        ) : items.length > 0 ? (
+          items.slice(0, 5).map((item) => (
+            <div className="card" key={item._id}>
+              <h3>{item.title}</h3>
+
+              <p>
+                <strong>Type:</strong> {item.type}
+              </p>
+
+              <p>
+                <strong>Location:</strong> {item.location}
+              </p>
+
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(item.date).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div className="card">
+            <h3>No Posts Yet</h3>
+            <p>Your lost and found items will appear here.</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
