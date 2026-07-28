@@ -29,39 +29,47 @@ const createItem = async (req, res) => {
 // Get all items
 const getAllItems = async (req, res) => {
   try {
-    const { search, type, category, location, status } = req.query;
+    const {
+      search,
+      type,
+      category,
+      location,
+      status,
+      page = 1,
+      limit = 10,
+    } = req.query;
 
     let filter = {};
 
     // Search across multiple fields
-if (search) {
-  filter.$or = [
-    {
-      title: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      description: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      location: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      category: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-  ];
-}
+    if (search) {
+      filter.$or = [
+        {
+          title: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          location: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          category: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
 
     // Filter by type
     if (type) {
@@ -86,14 +94,23 @@ if (search) {
       filter.status = status;
     }
 
-    const items = await Item.find(filter).sort({ createdAt: -1 });
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const items = await Item.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const totalItems = await Item.countDocuments(filter);
 
     res.status(200).json({
       success: true,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalItems / Number(limit)),
+      totalItems,
       count: items.length,
       items,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -149,7 +166,6 @@ const getItemById = async (req, res) => {
 // Update an item
 const updateItem = async (req, res) => {
   try {
-    // Find the item
     const item = await Item.findById(req.params.id);
 
     if (!item) {
@@ -159,7 +175,6 @@ const updateItem = async (req, res) => {
       });
     }
 
-    // Check if logged-in user is the owner
     if (item.postedBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -167,7 +182,6 @@ const updateItem = async (req, res) => {
       });
     }
 
-    // Update item
     const updatedItem = await Item.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -193,7 +207,6 @@ const updateItem = async (req, res) => {
 // Delete an item
 const deleteItem = async (req, res) => {
   try {
-    // Find the item
     const item = await Item.findById(req.params.id);
 
     if (!item) {
@@ -203,7 +216,6 @@ const deleteItem = async (req, res) => {
       });
     }
 
-    // Check if logged-in user is the owner
     if (item.postedBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -211,7 +223,6 @@ const deleteItem = async (req, res) => {
       });
     }
 
-    // Delete the item
     await Item.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
@@ -225,7 +236,6 @@ const deleteItem = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   createItem,
