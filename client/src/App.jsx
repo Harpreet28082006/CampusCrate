@@ -17,17 +17,19 @@ function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* Pages with Navbar */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/post-lost" element={<PostLost />} />
           <Route path="/post-found" element={<PostFound />} />
           <Route path="/item/:id" element={<ItemDetails />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
 
+        {/* Pages without Navbar */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<Admin />} />
 
         <Route path="*" element={<NotFound />} />
 

@@ -12,6 +12,8 @@ function PostFound() {
     image: null,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -30,6 +32,10 @@ function PostFound() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
+
+    setLoading(true);
 
     try {
       const form = new FormData();
@@ -68,8 +74,12 @@ function PostFound() {
         image: null,
       });
     } catch (error) {
-      console.error(error);
-      alert("Unable to post found item");
+      console.log(error.response);
+      console.log(error.response?.data);
+
+      alert(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,7 +164,11 @@ function PostFound() {
         <br />
         <br />
 
-        <Button text="Submit Found Item" type="submit" />
+        <Button
+          text={loading ? "Submitting..." : "Submit Found Item"}
+          type="submit"
+          disabled={loading}
+        />
       </form>
     </section>
   );

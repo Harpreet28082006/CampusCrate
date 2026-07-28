@@ -7,8 +7,19 @@ button{
     font-size:15px;
     font-weight:600;
     transition:.3s;
+    cursor:pointer;
 }
 
 button:hover{
     background:var(--secondary);
+}
+
+button:disabled{
+    background:#9ca3af;
+    cursor:not-allowed;
+    opacity:0.7;
+}
+
+button:disabled:hover{
+    background:#9ca3af;
 }

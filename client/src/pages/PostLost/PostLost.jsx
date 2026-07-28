@@ -12,6 +12,8 @@ function PostLost() {
     image: null,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -30,6 +32,10 @@ function PostLost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
+
+    setLoading(true);
 
     try {
       const form = new FormData();
@@ -68,8 +74,12 @@ function PostLost() {
         image: null,
       });
     } catch (error) {
-      console.error(error);
-      alert("Unable to post lost item");
+      console.log(error.response);
+      console.log(error.response?.data);
+
+      alert(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,7 +164,11 @@ function PostLost() {
         <br />
         <br />
 
-        <Button text="Submit Lost Item" />
+        <Button
+          text={loading ? "Submitting..." : "Submit Lost Item"}
+          type="submit"
+          disabled={loading}
+        />
       </form>
     </section>
   );

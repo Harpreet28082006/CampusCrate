@@ -4,10 +4,10 @@ const Item = require("../models/Item");
 const createItem = async (req, res) => {
   try {
     const item = await Item.create({
-  ...req.body,
-  photoUrl: req.file ? req.file.path : "",
-  postedBy: req.user.id,
-});
+      ...req.body,
+      photoUrl: req.file ? req.file.path : "",
+      postedBy: req.user.id,
+    });
 
     res.status(201).json({
       success: true,
@@ -21,6 +21,7 @@ const createItem = async (req, res) => {
     });
   }
 };
+
 // Get all items
 const getAllItems = async (req, res) => {
   try {
@@ -38,6 +39,27 @@ const getAllItems = async (req, res) => {
     });
   }
 };
+
+// Get logged-in user's items
+const getMyItems = async (req, res) => {
+  try {
+    const items = await Item.find({
+      postedBy: req.user.id,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: items.length,
+      items,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Get single item by ID
 const getItemById = async (req, res) => {
   try {
@@ -105,6 +127,7 @@ const updateItem = async (req, res) => {
     });
   }
 };
+
 // Delete an item
 const deleteItem = async (req, res) => {
   try {
@@ -140,9 +163,11 @@ const deleteItem = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   createItem,
   getAllItems,
+  getMyItems,
   getItemById,
   updateItem,
   deleteItem,

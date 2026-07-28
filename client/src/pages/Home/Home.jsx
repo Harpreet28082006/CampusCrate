@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./Home.css";
 
 import Button from "../../components/Button/Button";
@@ -6,26 +8,26 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import ItemCard from "../../components/ItemCard/ItemCard";
 
 function Home() {
-  const items = [
-    {
-      id: 1,
-      title: "Black Wallet",
-      location: "Library Block",
-      date: "26 July 2026",
-    },
-    {
-      id: 2,
-      title: "College ID Card",
-      location: "Cafeteria",
-      date: "25 July 2026",
-    },
-    {
-      id: 3,
-      title: "Power Bank",
-      location: "Parking Area",
-      date: "24 July 2026",
-    },
-  ];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  async function fetchItems() {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:5000/api/items"
+      );
+
+      setItems(data.items);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   return (
     <>
@@ -51,7 +53,6 @@ function Home() {
       </section>
 
       <section className="items-section">
-
         <div className="section-heading">
           <h2>Recently Added Items</h2>
 
@@ -61,17 +62,23 @@ function Home() {
         </div>
 
         <div className="items-grid">
-          {items.map((item) => (
-            <ItemCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              location={item.location}
-              date={item.date}
-            />
-          ))}
+          {loading ? (
+            <p>Loading...</p>
+          ) : items.length > 0 ? (
+            items.map((item) => (
+              <ItemCard
+                key={item._id}
+                id={item._id}
+                title={item.title}
+                location={item.location}
+                date={new Date(item.date).toLocaleDateString()}
+                photoUrl={item.photoUrl}
+              />
+            ))
+          ) : (
+            <p>No items found.</p>
+          )}
         </div>
-
       </section>
     </>
   );
