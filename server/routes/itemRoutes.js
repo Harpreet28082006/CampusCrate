@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createItem,
   getAllItems,
+  getMyItems,
   getItemById,
   updateItem,
   deleteItem,
@@ -16,6 +17,9 @@ const upload = require("../middleware/upload");
 router.post("/", protect, upload.single("photo"), createItem);
 // Get all items
 router.get("/", getAllItems);
+
+// Get logged-in user's items
+router.get("/my-items", protect, getMyItems);
 
 // Get a single item by ID
 router.get("/:id", getItemById);

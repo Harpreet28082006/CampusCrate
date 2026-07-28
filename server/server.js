@@ -29,6 +29,8 @@ app.get("/", (req, res) => {
 app.use("/api/items", itemRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/claims", claimRoutes);
+const dashboardRoutes = require("./routes/dashboardRoutes");
+app.use("/api/dashboard", dashboardRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
