@@ -86,7 +86,7 @@ if (search) {
       filter.status = status;
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (Number(page) - 1) * Number(limit);
 
 const items = await Item.find(filter)
   .sort({ createdAt: -1 })
@@ -98,8 +98,9 @@ const items = await Item.find(filter)
 res.status(200).json({
   success: true,
   currentPage: Number(page),
-  totalPages: Math.ceil(totalItems / limit),
+  totalPages: Math.ceil(totalItems / Number(limit)),
   totalItems,
+  count: items.length,
   items,
 });
 
