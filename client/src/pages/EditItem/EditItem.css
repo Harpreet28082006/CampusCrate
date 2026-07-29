@@ -1,0 +1,9 @@
+.edit-item{
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.edit-item h1{
+    margin-bottom: 15px;
+}

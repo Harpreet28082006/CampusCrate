@@ -94,6 +94,13 @@ function Dashboard() {
                 <strong>Date:</strong>{" "}
                 {new Date(item.date).toLocaleDateString()}
               </p>
+
+              {/* Edit Button */}
+              <div className="card-actions">
+                <Link to={`/edit-item/${item._id}`}>
+                  <button>Edit</button>
+                </Link>
+              </div>
             </div>
           ))
         ) : (
