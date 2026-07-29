@@ -29,6 +29,36 @@ function Dashboard() {
     }
   }
 
+  async function handleDelete(id) {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!isConfirmed) return;
+
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/items/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Item deleted successfully!");
+
+      fetchItems();
+    } catch (error) {
+      console.error("Delete Error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to delete item."
+      );
+    }
+  }
+
   useEffect(() => {
     fetchItems();
   }, []);
@@ -95,11 +125,16 @@ function Dashboard() {
                 {new Date(item.date).toLocaleDateString()}
               </p>
 
-              {/* Edit Button */}
               <div className="card-actions">
                 <Link to={`/edit-item/${item._id}`}>
                   <button>Edit</button>
                 </Link>
+
+                <button
+                  onClick={() => handleDelete(item._id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))
