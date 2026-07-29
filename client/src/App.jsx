@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import PostLost from "./pages/PostLost/PostLost";
 import PostFound from "./pages/PostFound/PostFound";
 import ItemDetails from "./pages/ItemDetails/ItemDetails";
+import EditItem from "./pages/EditItem/EditItem";
 import Admin from "./pages/Admin/Admin";
 import NotFound from "./pages/NotFound/NotFound";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/post-lost" element={<PostLost />} />
           <Route path="/post-found" element={<PostFound />} />
           <Route path="/item/:id" element={<ItemDetails />} />
+          <Route path="/edit-item/:id" element={<EditItem />} />
           <Route path="/admin" element={<Admin />} />
         </Route>
 
