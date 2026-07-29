@@ -22,11 +22,12 @@
 
 .card {
   background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 22px;
-  transition: 0.3s;
-  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
@@ -41,13 +42,14 @@
 }
 
 .card h3 {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   color: var(--black);
+  font-size: 24px;
 }
-
 .card p {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #555;
+  line-height: 1.6;
 }
 
 .dashboard-actions {
@@ -76,13 +78,21 @@
 }
 
 .recent-posts {
-  margin-top: 20px;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .card-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 12px;
   margin-top: 18px;
+}
+
+.card-actions a {
+  text-decoration: none;
 }
 
 .card-actions button {
@@ -91,8 +101,8 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
-  transition: 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .card-actions a button {
@@ -100,7 +110,7 @@
   color: white;
 }
 
-.card-actions button:last-child {
+.card-actions > button {
   background: #ef4444;
   color: white;
 }
@@ -137,5 +147,95 @@
 
   .card-actions button {
     width: 100%;
+  }
+}
+
+
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  min-width: 45px;
+  height: 42px;
+  border: none;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #333;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: var(--primary);
+  color: white;
+}
+
+.pagination button:disabled {
+  background: #d1d5db;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.active-page {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+
+.item-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-image {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.lost-tag {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.found-tag {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .item-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .item-image {
+    width: 100%;
+    height: 180px;
   }
 }

@@ -118,15 +118,41 @@ res.status(200).json({
 // Get logged-in user's items
 const getMyItems = async (req, res) => {
   try {
-    const items = await Item.find({
-      postedBy: req.user.id,
-    }).sort({ createdAt: -1 });
+    const { page = 1, limit = 5 } = req.query;
 
-    res.status(200).json({
-      success: true,
-      count: items.length,
-      items,
-    });
+    const filter = {
+      postedBy: req.user.id,
+    };
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const items = await Item.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const totalItems = await Item.countDocuments(filter);
+
+    const totalLostItems = await Item.countDocuments({
+  postedBy: req.user.id,
+  type: "lost",
+});
+
+const totalFoundItems = await Item.countDocuments({
+  postedBy: req.user.id,
+  type: "found",
+});
+
+   res.status(200).json({
+  success: true,
+  currentPage: Number(page),
+  totalPages: Math.ceil(totalItems / Number(limit)),
+  totalItems,
+  totalLostItems,
+  totalFoundItems,
+  count: items.length,
+  items,
+});
   } catch (error) {
     res.status(500).json({
       success: false,
