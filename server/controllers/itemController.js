@@ -7,10 +7,13 @@ const createItem = async (req, res) => {
 
   try {
     const item = await Item.create({
-      ...req.body,
-      photoUrl: req.file ? req.file.path : "",
-      postedBy: req.user.id,
-    });
+  ...req.body,
+  tags: req.body.tags
+    ? req.body.tags.split(",").map(tag => tag.trim())
+    : [],
+  photoUrl: req.file ? req.file.path : "",
+  postedBy: req.user.id,
+});
 
     res.status(201).json({
       success: true,
