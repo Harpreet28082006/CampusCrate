@@ -7,13 +7,13 @@ const createItem = async (req, res) => {
 
   try {
     const item = await Item.create({
-  ...req.body,
-  tags: req.body.tags
-    ? req.body.tags.split(",").map(tag => tag.trim())
-    : [],
-  photoUrl: req.file ? req.file.path : "",
-  postedBy: req.user.id,
-});
+      ...req.body,
+      tags: req.body.tags
+        ? req.body.tags.split(",").map((tag) => tag.trim())
+        : [],
+      photoUrl: req.file ? req.file.path : "",
+      postedBy: req.user.id,
+    });
 
     res.status(201).json({
       success: true,
@@ -32,39 +32,47 @@ const createItem = async (req, res) => {
 // Get all items
 const getAllItems = async (req, res) => {
   try {
-    const { search, type, category, location, status, page = 1, limit = 10 } = req.query;
-
+    const {
+      search,
+      type,
+      category,
+      location,
+      status,
+      sort,
+      page = 1,
+      limit = 10,
+    } = req.query;
     let filter = {};
 
     // Search across multiple fields
-if (search) {
-  filter.$or = [
-    {
-      title: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      description: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      location: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-    {
-      category: {
-        $regex: search,
-        $options: "i",
-      },
-    },
-  ];
-}
+    if (search) {
+      filter.$or = [
+        {
+          title: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          location: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          category: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
+    }
 
     // Filter by type
     if (type) {
@@ -91,22 +99,27 @@ if (search) {
 
     const skip = (Number(page) - 1) * Number(limit);
 
+   let sortOption = { createdAt: -1 };
+
+if (sort === "oldest") {
+  sortOption = { createdAt: 1 };
+}
+
 const items = await Item.find(filter)
-  .sort({ createdAt: -1 })
+  .sort(sortOption)
   .skip(skip)
   .limit(Number(limit));
 
-   const totalItems = await Item.countDocuments(filter);
+    const totalItems = await Item.countDocuments(filter);
 
-res.status(200).json({
-  success: true,
-  currentPage: Number(page),
-  totalPages: Math.ceil(totalItems / Number(limit)),
-  totalItems,
-  count: items.length,
-  items,
-});
-
+    res.status(200).json({
+      success: true,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalItems / Number(limit)),
+      totalItems,
+      count: items.length,
+      items,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -134,25 +147,25 @@ const getMyItems = async (req, res) => {
     const totalItems = await Item.countDocuments(filter);
 
     const totalLostItems = await Item.countDocuments({
-  postedBy: req.user.id,
-  type: "lost",
-});
+      postedBy: req.user.id,
+      type: "lost",
+    });
 
-const totalFoundItems = await Item.countDocuments({
-  postedBy: req.user.id,
-  type: "found",
-});
+    const totalFoundItems = await Item.countDocuments({
+      postedBy: req.user.id,
+      type: "found",
+    });
 
-   res.status(200).json({
-  success: true,
-  currentPage: Number(page),
-  totalPages: Math.ceil(totalItems / Number(limit)),
-  totalItems,
-  totalLostItems,
-  totalFoundItems,
-  count: items.length,
-  items,
-});
+    res.status(200).json({
+      success: true,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalItems / Number(limit)),
+      totalItems,
+      totalLostItems,
+      totalFoundItems,
+      count: items.length,
+      items,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -207,14 +220,10 @@ const updateItem = async (req, res) => {
     }
 
     // Update item
-    const updatedItem = await Item.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     res.status(200).json({
       success: true,
@@ -264,7 +273,6 @@ const deleteItem = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   createItem,
