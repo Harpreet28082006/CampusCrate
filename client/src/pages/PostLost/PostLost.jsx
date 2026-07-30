@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 import Button from "../../components/Button/Button";
 
 function PostLost() {
@@ -63,7 +64,7 @@ function PostLost() {
         }
       );
 
-      alert(data.message);
+      toast.success(data.message || "Lost item posted successfully!");
 
       setFormData({
         title: "",
@@ -77,7 +78,9 @@ function PostLost() {
       console.log(error.response);
       console.log(error.response?.data);
 
-      alert(error.response?.data?.message || error.message);
+      toast.error(
+        error.response?.data?.message || error.message
+      );
     } finally {
       setLoading(false);
     }
