@@ -6,7 +6,6 @@ const createClaim = async (req, res) => {
   try {
     const { itemId, message } = req.body;
 
-    // Check if item exists
     const item = await Item.findById(itemId);
 
     if (!item) {
@@ -16,7 +15,7 @@ const createClaim = async (req, res) => {
       });
     }
 
-    // Check if user is trying to claim their own item
+    // Prevent claiming own item
     if (item.postedBy.toString() === req.user.id) {
       return res.status(400).json({
         success: false,
@@ -24,7 +23,7 @@ const createClaim = async (req, res) => {
       });
     }
 
-    // Check if claim already exists
+    // Prevent duplicate claim
     const existingClaim = await Claim.findOne({
       itemId,
       claimantId: req.user.id,
@@ -37,7 +36,6 @@ const createClaim = async (req, res) => {
       });
     }
 
-    // Create claim
     const claim = await Claim.create({
       itemId,
       claimantId: req.user.id,
@@ -57,7 +55,6 @@ const createClaim = async (req, res) => {
     });
   }
 };
-
 
 
 // Get all claims for a specific item
@@ -82,9 +79,12 @@ const getClaimsForItem = async (req, res) => {
     });
   }
 };
+
+
 // Approve a claim
 const approveClaim = async (req, res) => {
   try {
+
     const claim = await Claim.findById(req.params.claimId);
 
     if (!claim) {
@@ -94,14 +94,34 @@ const approveClaim = async (req, res) => {
       });
     }
 
-    // Approve the claim
+
+    const item = await Item.findById(claim.itemId);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+
+    // Only item owner can approve
+    if (item.postedBy.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to approve this claim",
+      });
+    }
+
+
     claim.status = "approved";
     await claim.save();
 
-    // Update item status
+
     await Item.findByIdAndUpdate(claim.itemId, {
       status: "returned",
     });
+
 
     res.status(200).json({
       success: true,
@@ -109,16 +129,23 @@ const approveClaim = async (req, res) => {
       claim,
     });
 
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
+
+
+
 // Reject a claim
 const rejectClaim = async (req, res) => {
   try {
+
     const claim = await Claim.findById(req.params.claimId);
 
     if (!claim) {
@@ -128,10 +155,30 @@ const rejectClaim = async (req, res) => {
       });
     }
 
-    // Reject the claim
+
+    const item = await Item.findById(claim.itemId);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+
+    // Only item owner can reject
+    if (item.postedBy.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to reject this claim",
+      });
+    }
+
+
     claim.status = "rejected";
 
     await claim.save();
+
 
     res.status(200).json({
       success: true,
@@ -139,13 +186,19 @@ const rejectClaim = async (req, res) => {
       claim,
     });
 
+
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
+
+
+
 module.exports = {
   createClaim,
   getClaimsForItem,
