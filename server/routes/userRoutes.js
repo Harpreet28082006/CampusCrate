@@ -4,13 +4,22 @@ const router = express.Router();
 const {
   getMyProfile,
   updateMyProfile,
+  updateProfilePhoto,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
 
 // Get logged-in user profile
 router.get("/profile", protect, getMyProfile);
 
 // Update logged-in user profile
 router.put("/profile", protect, updateMyProfile);
+// Update profile photo
+router.put(
+  "/profile/photo",
+  protect,
+  upload.single("photo"),
+  updateProfilePhoto
+);
 
 module.exports = router;

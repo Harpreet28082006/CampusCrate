@@ -13,6 +13,7 @@ const {
 const { protect } = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
+
 // Create a new lost/found item
 router.post("/", protect, upload.single("photo"), createItem);
 
