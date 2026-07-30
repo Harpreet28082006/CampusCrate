@@ -55,3 +55,27 @@
     }
 
 }
+
+.details-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.claim-btn,
+.contact-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.claim-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.contact-btn {
+  background: #e5e7eb;
+}

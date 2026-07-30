@@ -1,3 +1,4 @@
+import ClaimModal from "../../components/ClaimModal/ClaimModal";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -8,12 +9,11 @@ function ItemDetails() {
 
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showClaimModal, setShowClaimModal] = useState(false);
 
   async function fetchItem() {
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/items/${id}`
-      );
+      const { data } = await axios.get(`http://localhost:5000/api/items/${id}`);
 
       setItem(data.item);
     } catch (error) {
@@ -55,10 +55,7 @@ function ItemDetails() {
 
       <div className="details-card">
         <img
-          src={
-            item.photoUrl ||
-            "https://placehold.co/500x350?text=No+Image"
-          }
+          src={item.photoUrl || "https://placehold.co/500x350?text=No+Image"}
           alt={item.title}
         />
 
@@ -78,8 +75,7 @@ function ItemDetails() {
           </p>
 
           <p>
-            <strong>Date:</strong>{" "}
-            {new Date(item.date).toLocaleDateString()}
+            <strong>Date:</strong> {new Date(item.date).toLocaleDateString()}
           </p>
 
           <p>
@@ -92,9 +88,26 @@ function ItemDetails() {
             {item.description}
           </p>
 
-          <button>Contact Owner</button>
+          <div className="details-buttons">
+            <button
+              className="claim-btn"
+              onClick={() => setShowClaimModal(true)}
+            >
+              Claim Item
+            </button>
+
+            <button className="contact-btn">Contact Owner</button>
+          </div>
         </div>
       </div>
+
+{showClaimModal && (
+  <ClaimModal
+    itemId={item._id}
+    onClose={() => setShowClaimModal(false)}
+  />
+)}
+
     </section>
   );
 }
