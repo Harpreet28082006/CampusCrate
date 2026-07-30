@@ -1,9 +1,10 @@
 const Item = require("../models/Item");
+const cloudinary = require("../config/cloudinary");
 
 // Create a new lost/found item
 const createItem = async (req, res) => {
-  console.log("BODY:", req.body);
-  console.log("FILE:", req.file);
+  // console.log("BODY:", req.body);
+  // console.log("FILE:", req.file);
 
   try {
     const item = await Item.create({
@@ -238,6 +239,7 @@ const updateItem = async (req, res) => {
   }
 };
 
+
 // Delete an item
 const deleteItem = async (req, res) => {
   try {
@@ -252,6 +254,8 @@ const deleteItem = async (req, res) => {
     }
 
     // Check if logged-in user is the owner
+    console.log("Item Owner:", item.postedBy.toString());
+console.log("Logged-in User:", req.user.id);
     if (item.postedBy.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -259,12 +263,22 @@ const deleteItem = async (req, res) => {
       });
     }
 
-    // Delete the item
+    // Delete image from Cloudinary if it exists
+    if (item.photoUrl) {
+      const urlParts = item.photoUrl.split("/");
+      const folder = urlParts[urlParts.length - 2];
+      const fileName = urlParts[urlParts.length - 1].split(".")[0];
+      const publicId = `${folder}/${fileName}`;
+
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    // Delete the item from MongoDB
     await Item.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,
-      message: "Item deleted successfully",
+      message: "Item and image deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
