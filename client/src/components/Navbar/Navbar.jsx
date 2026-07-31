@@ -39,6 +39,10 @@ function Navbar() {
             </li>
 
             <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+
+            <li>
               <button onClick={handleLogout}>Logout</button>
             </li>
           </>

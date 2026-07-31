@@ -14,21 +14,31 @@ function PostFound() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState("");
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
+      const file = files[0];
+
       setFormData({
         ...formData,
-        image: files[0],
+        image: file,
       });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+
+      if (file) {
+        setPreview(URL.createObjectURL(file));
+      }
+
+      return;
     }
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -36,18 +46,61 @@ function PostFound() {
 
     if (loading) return;
 
+    const title = formData.title.trim();
+    const location = formData.location.trim();
+    const description = formData.description.trim();
+
+    if (!title) {
+      return toast.error("Item title is required.");
+    }
+
+    if (title.length < 3) {
+      return toast.error("Title must be at least 3 characters.");
+    }
+
+    if (!formData.category) {
+      return toast.error("Please select a category.");
+    }
+
+    if (!location) {
+      return toast.error("Location is required.");
+    }
+
+    if (location.length < 3) {
+      return toast.error("Please enter a valid location.");
+    }
+
+    if (!formData.date) {
+      return toast.error("Please select a date.");
+    }
+
+    const selectedDate = new Date(formData.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate > today) {
+      return toast.error("Future dates are not allowed.");
+    }
+
+    if (!description) {
+      return toast.error("Description is required.");
+    }
+
+    if (description.length < 15) {
+      return toast.error("Description must contain at least 15 characters.");
+    }
+
     setLoading(true);
 
     try {
       const form = new FormData();
 
       form.append("type", "found");
-      form.append("title", formData.title);
+      form.append("title", title);
       form.append("category", formData.category);
-      form.append("location", formData.location);
+      form.append("location", location);
       form.append("date", formData.date);
-      form.append("description", formData.description);
-
+      form.append("description", description);
       if (formData.image) {
         form.append("photo", formData.image);
       }
@@ -61,10 +114,12 @@ function PostFound() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       toast.success(data.message || "Found item posted successfully!");
+
+      setPreview("");
 
       setFormData({
         title: "",
@@ -78,9 +133,7 @@ function PostFound() {
       console.log(error.response);
       console.log(error.response?.data);
 
-      toast.error(
-        error.response?.data?.message || error.message
-      );
+      toast.error(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
@@ -173,6 +226,28 @@ function PostFound() {
           disabled={loading}
         />
       </form>
+
+
+
+{preview && (
+  <>
+    <br />
+
+    <img
+      src={preview}
+      alt="Preview"
+      style={{
+        width: "220px",
+        borderRadius: "10px",
+        objectFit: "cover",
+      }}
+    />
+
+    <br />
+    <br />
+  </>
+)}
+
     </section>
   );
 }

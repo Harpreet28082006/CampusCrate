@@ -10,9 +10,17 @@ function ClaimModal({ itemId, onClose }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!message.trim()) {
-      return toast.error("Please enter your message.");
-    }
+    const claimMessage = message.trim();
+
+if (!claimMessage) {
+  return toast.error("Please enter your message.");
+}
+
+if (claimMessage.length < 20) {
+  return toast.error(
+    "Please provide at least 20 characters explaining why this item belongs to you."
+  );
+}
 
     try {
       setLoading(true);
@@ -23,7 +31,7 @@ function ClaimModal({ itemId, onClose }) {
         "http://localhost:5000/api/claims",
         {
           itemId,
-          message,
+          message: claimMessage,
         },
         {
           headers: {

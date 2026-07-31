@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Profile from "./pages/Profile/Profile";
 import PostLost from "./pages/PostLost/PostLost";
 import PostFound from "./pages/PostFound/PostFound";
 import ItemDetails from "./pages/ItemDetails/ItemDetails";
@@ -22,6 +23,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/post-lost" element={<PostLost />} />
           <Route path="/post-found" element={<PostFound />} />
           <Route path="/item/:id" element={<ItemDetails />} />
