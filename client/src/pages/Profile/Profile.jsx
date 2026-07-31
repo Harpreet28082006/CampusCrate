@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
 
 function Profile() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState(null);
   const [items, setItems] = useState([]);
@@ -87,8 +89,9 @@ function Profile() {
             </div>
           </div>
         </div>
-
-        <button className="edit-btn">Edit Profile</button>
+        <button className="edit-btn" onClick={() => navigate("/edit-profile")}>
+          Edit Profile
+        </button>{" "}
       </div>
 
       <div className="stats-section">
@@ -121,7 +124,12 @@ function Profile() {
         <div className="section-header">
           <h2>My Items</h2>
 
-          <button className="view-all-btn">View All</button>
+          <button
+            className="view-all-btn"
+            onClick={() => navigate("/my-items")}
+          >
+            View All
+          </button>
         </div>
 
         {items.length === 0 ? (

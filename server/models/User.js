@@ -33,6 +33,25 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    // ✅ NEW
+    phone: {
+      type: String,
+      default: "",
+    },
+
+    // ✅ NEW
+    course: {
+      type: String,
+      default: "",
+    },
+
+    // ✅ NEW
+    bio: {
+      type: String,
+      default: "",
+      maxlength: 250,
+    },
+
     profilePhoto: {
       type: String,
       default: "",

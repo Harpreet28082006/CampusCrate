@@ -182,8 +182,10 @@ const getMyItems = async (req, res) => {
 // Get single item by ID
 const getItemById = async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id);
-
+const item = await Item.findById(req.params.id).populate(
+  "postedBy",
+  "name email college profilePhoto"
+);
     if (!item) {
       return res.status(404).json({
         success: false,
