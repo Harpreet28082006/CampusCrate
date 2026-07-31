@@ -11,12 +11,14 @@ function EditItem() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    location: "",
-    date: "",
-    description: "",
-  });
+  type: "",
+  title: "",
+  category: "",
+  location: "",
+  date: "",
+  status: "",
+  description: "",
+});
 
   useEffect(() => {
     fetchItem();
@@ -29,14 +31,16 @@ function EditItem() {
       );
 
       setFormData({
-        title: data.item.title || "",
-        category: data.item.category || "",
-        location: data.item.location || "",
-        date: data.item.date
-          ? data.item.date.split("T")[0]
-          : "",
-        description: data.item.description || "",
-      });
+  type: data.item.type || "",
+  title: data.item.title || "",
+  category: data.item.category || "",
+  location: data.item.location || "",
+  date: data.item.date
+    ? data.item.date.split("T")[0]
+    : "",
+  status: data.item.status || "",
+  description: data.item.description || "",
+});
     } catch (error) {
       console.error("Error fetching item:", error);
       alert("Failed to load item.");
@@ -69,7 +73,7 @@ function EditItem() {
       );
 
       alert("Item updated successfully!");
-      navigate("/dashboard");
+      navigate("/my-items");
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.message || "Failed to update item.");
@@ -94,6 +98,21 @@ function EditItem() {
 
         <br />
         <br />
+
+        <div className="form-group">
+  <label>Item Type</label>
+
+  <select
+    name="type"
+    value={formData.type}
+    onChange={handleChange}
+    required
+  >
+    <option value="">Select Type</option>
+    <option value="lost">Lost Item</option>
+    <option value="found">Found Item</option>
+  </select>
+</div>
 
         <select
           name="category"
@@ -133,6 +152,21 @@ function EditItem() {
           onChange={handleChange}
           required
         />
+
+        <div className="form-group">
+  <label>Status</label>
+
+  <select
+    name="status"
+    value={formData.status}
+    onChange={handleChange}
+    required
+  >
+    <option value="active">Active</option>
+    <option value="claimed">Claimed</option>
+    <option value="returned">Returned</option>
+  </select>
+</div>
 
         <br />
         <br />
