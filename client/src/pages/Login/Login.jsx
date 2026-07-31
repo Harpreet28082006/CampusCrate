@@ -22,10 +22,34 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const email = formData.email.trim();
+    const password = formData.password.trim();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      return toast.error("Email is required.");
+    }
+
+    if (!emailRegex.test(email)) {
+      return toast.error("Please enter a valid email address.");
+    }
+
+    if (!password) {
+      return toast.error("Password is required.");
+    }
+
+    if (password.length < 6) {
+      return toast.error("Password must be at least 6 characters.");
+    }
+
     try {
       const { data } = await axios.post(
         "http://localhost:5000/api/auth/login",
-        formData
+        {
+          email,
+          password,
+        }
       );
 
       localStorage.setItem("token", data.token);
@@ -35,7 +59,7 @@ function Login() {
 
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed.");
     }
   };
 
@@ -68,10 +92,7 @@ function Login() {
         <br />
         <br />
 
-        <Button
-          text="Login"
-          type="submit"
-        />
+        <Button text="Login" type="submit" />
       </form>
 
       <br />
