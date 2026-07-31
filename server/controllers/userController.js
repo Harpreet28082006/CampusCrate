@@ -1,9 +1,30 @@
+const Item = require("../models/Item");
+const Claim = require("../models/Claim");
 const User = require("../models/User");
 
 // Get logged-in user profile
 const getMyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
+
+    const lostItems = await Item.countDocuments({
+  postedBy: req.user.id,
+  type: "lost",
+});
+
+const foundItems = await Item.countDocuments({
+  postedBy: req.user.id,
+  type: "found",
+});
+
+const claimsMade = await Claim.countDocuments({
+  claimantId: req.user.id,
+});
+
+const approvedClaims = await Claim.countDocuments({
+  claimantId: req.user.id,
+  status: "approved",
+});
 
     if (!user) {
       return res.status(404).json({
@@ -12,10 +33,16 @@ const getMyProfile = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      user,
-    });
+   res.status(200).json({
+  success: true,
+  user,
+  stats: {
+    lostItems,
+    foundItems,
+    claimsMade,
+    approvedClaims,
+  },
+});
 
   } catch (error) {
     res.status(500).json({
