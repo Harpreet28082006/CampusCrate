@@ -43,7 +43,11 @@ const getAllItems = async (req, res) => {
       page = 1,
       limit = 10,
     } = req.query;
-    let filter = {};
+   let filter = {
+  status: {
+    $ne: "returned",
+  },
+};
 
     // Search across multiple fields
     if (search) {
