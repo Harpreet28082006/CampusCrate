@@ -67,6 +67,48 @@ function MyItems() {
     return <h2 className="loading">Loading...</h2>;
   }
 
+
+  const handleDelete = async (id) => {
+
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this item?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    await axios.delete(
+      `http://localhost:5000/api/items/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setItems((prev) =>
+      prev.filter((item) => item._id !== id)
+    );
+
+    alert("Item deleted successfully!");
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Failed to delete item."
+    );
+
+  }
+
+};
+
+
   return (
     <section className="my-items-page">
       <div className="page-header">
@@ -187,21 +229,30 @@ function MyItems() {
           <span className={`status ${item.status}`}>
             {item.status}
           </span>
+<div className="buttons">
 
-          <div className="buttons">
+  <Link
+    to={`/item/${item._id}`}
+    className="view-btn"
+  >
+    View
+  </Link>
 
-            <Link
-              to={`/item/${item._id}`}
-              className="view-btn"
-            >
-              View Details
-            </Link>
+  <Link
+    to={`/edit-item/${item._id}`}
+    className="edit-btn"
+  >
+    Edit
+  </Link>
 
-            <button className="menu-btn">
-              ⋮
-            </button>
+  <button
+    className="delete-btn"
+    onClick={() => handleDelete(item._id)}
+  >
+    Delete
+  </button>
 
-          </div>
+</div>
 
         </div>
 
