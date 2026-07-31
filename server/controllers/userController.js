@@ -55,7 +55,13 @@ const approvedClaims = await Claim.countDocuments({
 // Update logged-in user profile
 const updateMyProfile = async (req, res) => {
   try {
-    const { name, college } = req.body;
+    const {
+      name,
+      college,
+      phone,
+      course,
+      bio,
+    } = req.body;
 
     const user = await User.findById(req.user.id);
 
@@ -66,27 +72,20 @@ const updateMyProfile = async (req, res) => {
       });
     }
 
-    if (name) {
-      user.name = name;
-    }
-
-    if (college) {
-      user.college = college;
-    }
+    user.name = name || user.name;
+    user.college = college || user.college;
+    user.phone = phone || user.phone;
+    user.course = course || user.course;
+    user.bio = bio || user.bio;
 
     await user.save();
+
+    const updatedUser = await User.findById(req.user.id).select("-password");
 
     res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        college: user.college,
-        profilePhoto: user.profilePhoto,
-      },
+      user: updatedUser,
     });
 
   } catch (error) {
