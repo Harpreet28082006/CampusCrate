@@ -1,3 +1,4 @@
+import ViewClaimsModal from "../../components/ViewClaimsModal/ViewClaimsModal";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -16,6 +17,9 @@ function Dashboard() {
 
   const [lostItems, setLostItems] = useState(0);
   const [foundItems, setFoundItems] = useState(0);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showClaimsModal, setShowClaimsModal] = useState(false);
 
   async function fetchItems(page = 1) {
     try {
@@ -117,16 +121,16 @@ function Dashboard() {
                   <h3>{item.title}</h3>
 
                   <p>
-                     <strong>Location:</strong> {item.location}
+                    <strong>Location:</strong> {item.location}
                   </p>
 
                   <p>
-                     <strong>Date:</strong>{" "}
+                    <strong>Date:</strong>{" "}
                     {new Date(item.date).toLocaleDateString()}
                   </p>
 
                   <p>
-                     <strong>Category:</strong> {item.category}
+                    <strong>Category:</strong> {item.category}
                   </p>
 
                   <p>
@@ -154,6 +158,15 @@ function Dashboard() {
                 <Link to={`/edit-item/${item._id}`}>
                   <button>Edit</button>
                 </Link>
+
+                <button
+                  onClick={() => {
+                    setSelectedItem(item._id);
+                    setShowClaimsModal(true);
+                  }}
+                >
+                  View Claims
+                </button>
 
                 <button onClick={() => handleDelete(item._id)}>Delete</button>
               </div>
@@ -194,6 +207,17 @@ function Dashboard() {
           </button>
         </div>
       )}
+
+     {showClaimsModal && (
+  <ViewClaimsModal
+    itemId={selectedItem}
+    onClose={() => {
+      setShowClaimsModal(false);
+      setSelectedItem(null);
+      fetchItems(currentPage);
+    }}
+  />
+)}
     </section>
   );
 }
