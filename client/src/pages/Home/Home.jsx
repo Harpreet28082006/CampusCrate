@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Home.css";
 
+import EmptySearch from "../../assets/illustrations/empty-search.svg";
+
+
+
 import Button from "../../components/Button/Button";
 import ItemCard from "../../components/ItemCard/ItemCard";
 
@@ -329,11 +333,36 @@ Returned
               />
             ))
           ) : (
-            <div className="empty-state">
-              <h3>No Items Found</h3>
+           <div className="empty-state">
 
-              <p>Try changing your search or filters.</p>
-            </div>
+<img
+  src={EmptySearch}
+  alt="No results"
+  className="empty-image"
+/>
+
+  <h3>No matching items found</h3>
+
+  <p>
+    We couldn't find any items matching your search.
+    Try adjusting your filters or search with different keywords.
+  </p>
+
+  <button
+    className="empty-reset-btn"
+    onClick={() => {
+      setSearch("");
+      setCategory("");
+      setType("");
+      setStatus("");
+      setLocation("");
+      setSort("newest");
+    }}
+  >
+    Clear All Filters
+  </button>
+
+</div>
           )}
         </div>
       </section>
