@@ -3,10 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Button from "../../components/Button/Button";
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
+const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -43,6 +45,7 @@ function Login() {
       return toast.error("Password must be at least 6 characters.");
     }
 
+    setLoading(true);
     try {
       const { data } = await axios.post(
         "http://localhost:5000/api/auth/login",
@@ -60,12 +63,14 @@ function Login() {
       navigate("/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed.");
-    }
+    }finally {
+  setLoading(false);
+}
   };
 
   return (
-    <section>
-      <h1>Login</h1>
+    <section className="login-page">
+      <h2>Login</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -92,7 +97,13 @@ function Login() {
         <br />
         <br />
 
-        <Button text="Login" type="submit" />
+        <button
+  type="submit"
+  disabled={loading}
+  className="login-btn"
+>
+  {loading ? "Logging in..." : "Login"}
+</button>
       </form>
 
       <br />
