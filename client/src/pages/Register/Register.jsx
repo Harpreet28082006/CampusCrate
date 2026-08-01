@@ -3,12 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Button from "../../components/Button/Button";
-import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,7 +63,6 @@ function Register() {
       return toast.error("Please enter a valid college name.");
     }
 
-    setLoading(true);
     try {
       await axios.post(
         "http://localhost:5000/api/auth/register",
@@ -81,16 +78,14 @@ function Register() {
 
       navigate("/login");
     } catch (err) {
-  toast.error(
-    err.response?.data?.message || "Registration failed."
-  );
-} finally {
-  setLoading(false);
-}
+      toast.error(
+        err.response?.data?.message || "Registration failed."
+      );
+    }
   };
 
   return (
-    <section className="register-page">
+    <section>
       <h1>Register</h1>
 
       <form onSubmit={handleSubmit}>
@@ -141,13 +136,10 @@ function Register() {
         <br />
         <br />
 
-        <button
-  type="submit"
-  className="register-btn"
-  disabled={loading}
->
-  {loading ? "Registering..." : "Register"}
-</button>
+        <Button
+          text="Register"
+          type="submit"
+        />
       </form>
 
       <br />
