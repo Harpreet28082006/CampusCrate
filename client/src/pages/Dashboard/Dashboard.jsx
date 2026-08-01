@@ -182,17 +182,10 @@ if (!result.isConfirmed) return;
             </div>
           ))
         ) : (
-          <div className="empty-state">
-  <div className="empty-icon">📦</div>
-
-  <h3>No Posts Yet</h3>
-
-  <p>Your lost and found items will appear here.</p>
-
-  <Link to="/post-lost">
-    <button>Create Your First Post</button>
-  </Link>
-</div>
+          <div className="card">
+            <h3>No Posts Yet</h3>
+            <p>Your lost and found items will appear here.</p>
+          </div>
         )}
       </div>
 
