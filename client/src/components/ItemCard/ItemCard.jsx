@@ -13,23 +13,35 @@ function ItemCard({
   return (
     <div className="item-card">
 
-      {photoUrl && (
+      {photoUrl ? (
         <img
           src={photoUrl}
           alt={title}
           className="item-image"
         />
+      ) : (
+        <div className="item-image placeholder-image">
+          No Image Available
+        </div>
       )}
 
-      <h3>{title}</h3>
+      <div className="item-content">
 
-      <p>{location}</p>
+        <h3>{title}</h3>
 
-      <p>{date}</p>
+        <p className="item-location">
+          📍 {location}
+        </p>
 
-      <Link to={`/item/${id}`}>
-        <Button text="View Details" />
-      </Link>
+        <p className="item-date">
+          📅 {date}
+        </p>
+
+        <Link to={`/item/${id}`}>
+          <Button text="View Details" />
+        </Link>
+
+      </div>
 
     </div>
   );
