@@ -8,6 +8,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const reportRoutes = require("./routes/reportRoutes");
 const itemRoutes = require("./routes/itemRoutes");
 const authRoutes = require("./routes/authRoutes");
 const claimRoutes = require("./routes/claimRoutes");
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 // Item Routes
+app.use("/api/reports", reportRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/claims", claimRoutes);

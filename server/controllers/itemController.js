@@ -294,6 +294,42 @@ console.log("Logged-in User:", req.user.id);
   }
 };
 
+const markItemReturned = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
+    }
+
+    if (item.postedBy.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized",
+      });
+    }
+
+    item.status = "returned";
+
+    await item.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Item marked as returned",
+      item,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createItem,
   getAllItems,
@@ -301,4 +337,5 @@ module.exports = {
   getItemById,
   updateItem,
   deleteItem,
+  markItemReturned,
 };

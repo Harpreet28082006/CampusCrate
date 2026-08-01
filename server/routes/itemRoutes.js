@@ -8,6 +8,7 @@ const {
   getItemById,
   updateItem,
   deleteItem,
+  markItemReturned,
 } = require("../controllers/itemController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -32,4 +33,5 @@ router.put("/:id", protect, updateItem);
 // Delete an item
 router.delete("/:id", protect, deleteItem);
 
+router.patch("/:id/status", protect, markItemReturned);
 module.exports = router;
