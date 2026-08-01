@@ -13,9 +13,31 @@ function Home() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [category, setCategory] = useState("");
+  const categories = [
+  "Electronics",
+  "ID Card",
+  "Wallet",
+  "Keys",
+  "Books",
+  "Bottle",
+  "Others",
+];
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
+  const [status, setStatus] = useState("");
   const [sort, setSort] = useState("newest");
+
+  const lostCount = items.filter(
+(item)=>item.type==="lost"
+).length;
+
+const foundCount = items.filter(
+(item)=>item.type==="found"
+).length;
+
+const locationCount = new Set(
+items.map(item=>item.location)
+).size;
 
   async function fetchItems() {
     setLoading(true);
@@ -29,6 +51,7 @@ function Home() {
       if (category) params.append("category", category);
       if (type) params.append("type", type);
       if (location) params.append("location", location);
+      if (status) params.append("status", status);
       params.append("sort", sort);
 
       const { data } = await axios.get(
@@ -54,7 +77,7 @@ function Home() {
   useEffect(() => {
     fetchItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, category, type, location, sort]);
+  }, [debouncedSearch, category, type, location,status, sort]);
 
   return (
     <>
@@ -88,33 +111,72 @@ function Home() {
       </section>
 
       <section className="advanced-search">
-        <input
-          type="text"
-          placeholder=" Search items..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+       <div className="search-box">
 
-        <div className="filters-row">
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            <option value="Electronics">Electronics</option>
-            <option value="ID Card">ID Card</option>
-            <option value="Wallet">Wallet</option>
-            <option value="Keys">Keys</option>
-            <option value="Books">Books</option>
-            <option value="Bottle">Bottle</option>
-            <option value="Others">Others</option>
-          </select>
+  <span className="search-icon"></span>
+
+  <input
+    type="text"
+    placeholder="Search lost or found items..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+</div>
+
+<div className="category-chips">
+
+  {categories.map((item) => (
+
+    <button
+      key={item}
+      type="button"
+      className={`chip ${
+        category === item ? "active-chip" : ""
+      }`}
+      onClick={() =>
+        setCategory(category === item ? "" : item)
+      }
+    >
+      {item}
+    </button>
+
+  ))}
+
+</div>
+
+<div className="filters-row">
+          
 
           <select value={type} onChange={(e) => setType(e.target.value)}>
             <option value="">All Types</option>
             <option value="lost">Lost</option>
             <option value="found">Found</option>
           </select>
+
+
+          <select
+value={status}
+onChange={(e)=>setStatus(e.target.value)}
+>
+
+<option value="">
+All Status
+</option>
+
+<option value="active">
+Active
+</option>
+
+<option value="claimed">
+Claimed
+</option>
+
+<option value="returned">
+Returned
+</option>
+
+</select>
 
           <input
             type="text"
@@ -136,15 +198,106 @@ function Home() {
               setCategory("");
               setType("");
               setLocation("");
+              setStatus("");
               setSort("newest");
             }}
           >
             Clear Filters
           </button>
         </div>
+        <div className="active-filters">
+
+  {category && (
+    <button
+      className="filter-pill"
+      onClick={() => setCategory("")}
+    >
+      {category} ✕
+    </button>
+  )}
+
+  {type && (
+    <button
+      className="filter-pill"
+      onClick={() => setType("")}
+    >
+      {type} ✕
+    </button>
+  )}
+
+  {status && (
+    <button
+      className="filter-pill"
+      onClick={() => setStatus("")}
+    >
+      {status} ✕
+    </button>
+  )}
+
+  {location && (
+    <button
+      className="filter-pill"
+      onClick={() => setLocation("")}
+    >
+      {location} ✕
+    </button>
+  )}
+
+</div>
       </section>
 
       <section className="items-section">
+        <div className="stats-grid">
+
+<div className="stat-box">
+
+<div className="stat-icon">
+
+</div>
+
+<h3>{items.length}</h3>
+
+<p>Total Items</p>
+
+</div>
+
+<div className="stat-box">
+
+<div className="stat-icon">
+
+</div>
+
+<h3>{lostCount}</h3>
+
+<p>Lost</p>
+
+</div>
+
+<div className="stat-box">
+
+<div className="stat-icon">
+
+</div>
+
+<h3>{foundCount}</h3>
+
+<p>Found</p>
+
+</div>
+
+<div className="stat-box">
+
+<div className="stat-icon">
+
+</div>
+
+<h3>{locationCount}</h3>
+
+<p>Locations</p>
+
+</div>
+
+</div>
         <div className="section-heading">
           <div>
             <h2>Recently Added Items</h2>
