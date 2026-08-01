@@ -23,14 +23,16 @@ function Home() {
     try {
       const params = new URLSearchParams();
 
-      if (debouncedSearch) params.append("search", debouncedSearch);
+      if (debouncedSearch) {
+        params.append("search", debouncedSearch);
+      }
       if (category) params.append("category", category);
       if (type) params.append("type", type);
       if (location) params.append("location", location);
       params.append("sort", sort);
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/items?${params.toString()}`
+        `http://localhost:5000/api/items?${params.toString()}`,
       );
 
       setItems(data.items);
@@ -56,17 +58,11 @@ function Home() {
   return (
     <>
       <section className="hero">
-
-        <span className="hero-badge">
-          🎓 Trusted by Students
-        </span>
-
         <h1>Campus Lost & Found System</h1>
 
         <p>
-          A simple platform where students can report lost items,
-          post found belongings, and help return valuable items
-          to their rightful owners.
+          A simple platform where students can report lost items, post found
+          belongings, and help return valuable items to their rightful owners.
         </p>
 
         <div className="hero-buttons">
@@ -79,33 +75,15 @@ function Home() {
           </Link>
         </div>
 
-        <div className="hero-stats">
-          <div className="stat-card">
-            <h2>{items.length}+</h2>
-            <p>Items Listed</p>
-          </div>
-
-          <div className="stat-card">
-            <h2>100%</h2>
-            <p>Secure Claims</p>
-          </div>
-
-          <div className="stat-card">
-            <h2>24/7</h2>
-            <p>Available</p>
-          </div>
-        </div>
-
         <div className="advanced-search">
           <input
             type="text"
-            placeholder="🔍 Search items..."
+            placeholder=" Search items..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           <div className="filters-row">
-
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -120,10 +98,7 @@ function Home() {
               <option value="Others">Others</option>
             </select>
 
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-            >
+            <select value={type} onChange={(e) => setType(e.target.value)}>
               <option value="">All Types</option>
               <option value="lost">Lost</option>
               <option value="found">Found</option>
@@ -131,15 +106,12 @@ function Home() {
 
             <input
               type="text"
-              placeholder="📍 Location"
+              placeholder=" Location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />
 
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-            >
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
             </select>
@@ -155,29 +127,24 @@ function Home() {
             >
               Clear Filters
             </button>
-
           </div>
         </div>
       </section>
 
       <section className="items-section">
-
         <div className="section-heading">
-
           <div>
             <h2>Recently Added Items</h2>
 
             <p className="result-count">
-              {items.length} item{items.length !== 1 ? "s" : ""} found
-            </p>
+  {items.length} item{items.length !== 1 ? "s" : ""} found
+</p>
           </div>
 
           <Link to="/dashboard">View All</Link>
-
         </div>
 
         <div className="items-grid">
-
           {loading ? (
             <div className="loading-container">
               <div className="loader"></div>
@@ -196,12 +163,11 @@ function Home() {
           ) : (
             <div className="empty-state">
               <h3>No Items Found</h3>
+
               <p>Try changing your search or filters.</p>
             </div>
           )}
-
         </div>
-
       </section>
     </>
   );

@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Dashboard.css";
-import { toast } from "react-hot-toast";
-import Swal from "sweetalert2";
 
 function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -48,18 +46,11 @@ function Dashboard() {
   }
 
   async function handleDelete(id) {
-    const result = await Swal.fire({
-  title: "Delete Item?",
-  text: "This action cannot be undone.",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#2563eb",
-  cancelButtonColor: "#ef4444",
-  confirmButtonText: "Yes, Delete",
-  cancelButtonText: "Cancel",
-});
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this item?",
+    );
 
-if (!result.isConfirmed) return;
+    if (!isConfirmed) return;
 
     try {
       await axios.delete(`http://localhost:5000/api/items/${id}`, {
@@ -68,13 +59,13 @@ if (!result.isConfirmed) return;
         },
       });
 
-      toast.success("Item deleted successfully!");
+      alert("Item deleted successfully!");
 
       fetchItems(currentPage);
     } catch (error) {
       console.error("Delete Error:", error);
 
-     toast.error(error.response?.data?.message || "Failed to delete item.");
+      alert(error.response?.data?.message || "Failed to delete item.");
     }
   }
 
