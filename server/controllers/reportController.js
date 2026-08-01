@@ -78,7 +78,68 @@ const getAllReports = async (req, res) => {
   }
 };
 
+// Approve report
+
+const approveReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Report not found",
+      });
+    }
+
+    report.status = "approved";
+    await report.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Report approved successfully",
+      report,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Reject report
+
+const rejectReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report) {
+      return res.status(404).json({
+        success: false,
+        message: "Report not found",
+      });
+    }
+
+    report.status = "rejected";
+    await report.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Report rejected successfully",
+      report,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   createReport,
   getAllReports,
+  approveReport,
+  rejectReport,
 };
