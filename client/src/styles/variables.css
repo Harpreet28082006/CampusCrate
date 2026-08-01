@@ -1,10 +1,89 @@
-:root{
-  --primary:#2563eb;
-  --secondary:#1e40af;
-  --background:#f8fafc;
-  --white:#ffffff;
-  --black:#111827;
-  --gray:#6b7280;
-  --border:#e5e7eb;
-  --radius:10px;
+:root {
+
+
+
+
+
+
+
+
+/* colors */
+
+  --primary:#8C5A37;
+--primary-dark:#6F4328;
+
+--secondary:#B98B67;
+
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+--background:#F7F3EE;
+  --background-gradient: linear-gradient(
+    180deg,
+    #FCFCFF 0%,
+    #F6F7FB 100%
+  );
+
+--card:rgba(255,252,248,.82);
+
+  --white: #ffffff;
+
+--text:#2F241D;
+--text-light:#78685C;
+
+--border:#E9DED2;
+
+
+
+  
+  /* border radius */
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+
+
+ /* shadows */
+
+  --shadow-sm:
+    0 4px 12px rgba(15,23,42,.05);
+
+  --shadow-md:
+    0 10px 30px rgba(15,23,42,.08);
+
+  --shadow-lg:
+    0 20px 45px rgba(15,23,42,.12);
+
+
+
+ /* transition */
+
+  --transition: .3s ease;
+
+
+
+/* spacing */
+
+  --space-xs:8px;
+  --space-sm:12px;
+  --space-md:16px;
+  --space-lg:24px;
+  --space-xl:32px;
+  --space-2xl:40px;
+
+
+
+/* typography */
+
+  --text-xs:13px;
+  --text-sm:14px;
+  --text-md:16px;
+  --text-lg:18px;
+  --text-xl:24px;
+  --text-2xl:32px;
+
 }
+

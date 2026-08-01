@@ -1,35 +1,62 @@
 import { Link } from "react-router-dom";
 import "./ItemCard.css";
 
-import Button from "../Button/Button";
-
 function ItemCard({
   id,
   title,
   location,
   date,
   photoUrl,
+  type,
+  category,
 }) {
   return (
     <div className="item-card">
 
-      {photoUrl && (
-        <img
-          src={photoUrl}
-          alt={title}
-          className="item-image"
-        />
-      )}
+      <div className="item-image-wrapper">
 
-      <h3>{title}</h3>
+        {photoUrl ? (
+          <img
+            src={photoUrl}
+            alt={title}
+            className="item-image"
+          />
+        ) : (
+          <div className="item-placeholder">
+            📦
+          </div>
+        )}
 
-      <p>{location}</p>
+        <span className={`item-status ${type}`}>
+          {type}
+        </span>
 
-      <p>{date}</p>
+      </div>
 
-      <Link to={`/item/${id}`}>
-        <Button text="View Details" />
-      </Link>
+      <div className="item-content">
+
+        <span className="item-category">
+          {category}
+        </span>
+
+        <h3>{title}</h3>
+
+        <div className="item-info">
+
+          <span>📍 {location}</span>
+
+          <span>📅 {date}</span>
+
+        </div>
+
+        <Link
+          to={`/item/${id}`}
+          className="item-link"
+        >
+          View Details →
+        </Link>
+
+      </div>
 
     </div>
   );

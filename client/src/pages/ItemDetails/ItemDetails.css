@@ -1,86 +1,286 @@
+/* ===========================
+   PAGE
+=========================== */
+
 .item-details{
+
     padding:50px 8%;
+
 }
 
 .back-btn{
-    display:inline-block;
-    margin-bottom:30px;
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    margin-bottom:28px;
+
     text-decoration:none;
+
     color:var(--primary);
+
     font-weight:600;
+
+    font-size:15px;
+
 }
+
+.back-btn:hover{
+
+    color:var(--primary-dark);
+
+}
+
+/* ===========================
+   CARD
+=========================== */
 
 .details-card{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:40px;
-    background:var(--white);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:30px;
+
+    max-width:920px;
+
+    margin:auto;
+
+    background:#FFFCF8;
+
+    border:1px solid #E6DDD3;
+
+    border-radius:26px;
+
+    overflow:hidden;
+
+    box-shadow:0 18px 45px rgba(73,48,33,.08);
+
 }
 
-.details-card > img{
+/* ===========================
+   IMAGE
+=========================== */
+
+.details-card img{
+
     width:100%;
-    height:380px;
+
+    height:420px;
+
     object-fit:cover;
-    border-radius:10px;
+
+    display:block;
+
+}
+
+/* ===========================
+   CONTENT
+=========================== */
+
+.details-content{
+
+    padding:36px;
+
 }
 
 .details-content h1{
-    margin-bottom:20px;
+
+    font-size:42px;
+
+    line-height:1.1;
+
+    margin-bottom:22px;
+
+    color:#2D241E;
+
 }
 
 .details-content p{
-    margin-bottom:15px;
-    line-height:1.7;
+
+    font-size:16px;
+
+    line-height:1.9;
+
+    color:#6F6258;
+
+    margin-bottom:18px;
+
 }
 
-.details-content button{
-    margin-top:20px;
-    background:var(--primary);
-    color:white;
-    border:none;
-    padding:12px 24px;
-    border-radius:8px;
-    cursor:pointer;
+/* ===========================
+   INFO
+=========================== */
+
+.details-info{
+
     display:flex;
-    align-items:center;
-    justify-content:center;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin:28px 0;
+
 }
+
+.details-info span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#5B4A3E;
+
+    font-size:15px;
+
+}
+
+/* ===========================
+   DESCRIPTION
+=========================== */
+
+.description{
+
+    margin-top:30px;
+
+    padding-top:28px;
+
+    border-top:1px solid #E6DDD3;
+
+}
+
+.description h3{
+
+    margin-bottom:14px;
+
+    font-size:22px;
+
+    color:#2D241E;
+
+}
+
+.description p{
+
+    margin:0;
+
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.details-buttons{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-top:36px;
+
+    flex-wrap:wrap;
+
+}
+
+.claim-btn{
+
+    flex:1;
+
+    min-width:180px;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#8B5E3C;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.claim-btn:hover{
+
+    background:#A66E48;
+
+}
+
+.contact-btn{
+
+    flex:1;
+
+    min-width:180px;
+
+    height:52px;
+
+    border:1px solid #E6DDD3;
+
+    border-radius:14px;
+
+    background:#F5EEE8;
+
+    color:#8B5E3C;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.contact-btn:hover{
+
+    background:#EFE5DD;
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
 
 @media(max-width:768px){
 
-    .item-details{
-        padding:30px 5%;
-    }
+.item-details{
 
-    .details-card{
-        grid-template-columns:1fr;
-    }
+padding:30px 5%;
 
 }
 
-.details-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
+.details-card img{
+
+height:260px;
+
+}
+
+.details-content{
+
+padding:24px;
+
+}
+
+.details-content h1{
+
+font-size:30px;
+
+}
+
+.details-buttons{
+
+flex-direction:column;
+
 }
 
 .claim-btn,
-.contact-btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
+.contact-btn{
+
+width:100%;
+
 }
 
-.claim-btn {
-  background: #2563eb;
-  color: white;
-}
-
-.contact-btn {
-  background: #e5e7eb;
 }

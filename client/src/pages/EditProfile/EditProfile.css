@@ -200,3 +200,37 @@ width:100%;
     object-fit:cover;
     border-radius:50%;
 }
+
+
+.security-section{
+    margin-top:32px;
+    padding-top:28px;
+    border-top:1px solid #e5e7eb;
+
+    max-width:420px;
+}
+
+.security-heading{
+    font-size:22px;
+    margin-bottom:18px;
+}
+
+.security-section .form-group{
+    margin-bottom:14px;
+}
+
+.security-section label{
+    font-size:14px;
+    margin-bottom:6px;
+    display:block;
+}
+
+.security-section input{
+    height:42px;
+    font-size:14px;
+}
+
+.security-section .save-btn{
+    margin-top:10px;
+    width:190px;
+}

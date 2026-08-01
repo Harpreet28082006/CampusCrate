@@ -1,25 +1,203 @@
 .item-card{
-    background:var(--white);
+
+    background:var(--card);
+
     border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px;
-    transition:.3s;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-md);
+
+    transition:var(--transition);
+
 }
 
 .item-card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    transform:translateY(-8px);
+
+    box-shadow:var(--shadow-lg);
+
 }
 
-.item-card h3{
-    margin-bottom:10px;
+.item-image-wrapper{
+
+    position:relative;
+
+    height:100px;
+
+    overflow:hidden;
+    display:flex;   
+    justify-content:center;
+    align-items:center;
+
 }
 
-.item-card p{
-    color:var(--gray);
-    margin-bottom:10px;
-}
+.item-image{
 
-.item-card button{
     width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.45s;
+
+}
+
+.item-card:hover .item-image{
+
+    transform:scale(1.06);
+
+}
+
+.item-placeholder{
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:70px;
+
+    background:#EFE7DC;
+
+}
+
+.item-status{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    padding:8px 16px;
+
+    border-radius:50px;
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+}
+
+.item-status.lost{
+
+    background:#C47A44;
+
+}
+
+.item-status.found{
+
+    background:#3F8A5B;
+
+}
+
+.item-content{
+
+    padding:22px;
+
+}
+
+.item-category{
+
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:50px;
+
+    background:#F3ECE5;
+
+    color:var(--primary);
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin-bottom:14px;
+
+}
+
+.item-content h3{
+
+    margin:0;
+
+    font-size:22px;
+
+    color:var(--text);
+
+}
+
+.item-info{
+
+    margin:18px 0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.item-info span{
+
+    color:var(--text-light);
+
+    font-size:15px;
+
+}
+
+.item-link{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-weight:700;
+
+}
+
+.item-link:hover{
+
+    transform:translateX(5px);
+
+}
+
+@media(max-width:768px){
+
+.item-image-wrapper{
+
+height:210px;
+
+}
+
+.item-content{
+
+padding:18px;
+
+}
+
+.item-content h3{
+
+font-size:20px;
+
+}
+
 }

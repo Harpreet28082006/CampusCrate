@@ -53,81 +53,94 @@ function Home() {
 
   useEffect(() => {
     fetchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, category, type, location, sort]);
 
   return (
     <>
       <section className="hero">
-        <h1>Campus Lost & Found System</h1>
+        <div className="hero-content">
+          <span className="hero-badge">
+            Trusted Campus Lost & Found Platform
+          </span>
 
-        <p>
-          A simple platform where students can report lost items, post found
-          belongings, and help return valuable items to their rightful owners.
-        </p>
+          <h1>
+            Lost something
+            <br />
+            on campus?
+          </h1>
 
-        <div className="hero-buttons">
-          <Link to="/post-lost">
-            <Button text="Report Lost" />
-          </Link>
+          <p>
+            We help students report lost belongings, discover found items and
+            reconnect with their rightful owners — quickly and securely.
+          </p>
 
-          <Link to="/post-found">
-            <Button text="Report Found" />
-          </Link>
+          <div className="hero-buttons">
+            <Link to="/post-lost">
+              <Button text="Report Lost" />
+            </Link>
+
+            <Link to="/post-found">
+              <Button text="Report Found" />
+            </Link>
+          </div>
         </div>
+      </section>
 
-        <div className="advanced-search">
+      <section className="advanced-search">
+        <input
+          type="text"
+          placeholder=" Search items..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <div className="filters-row">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Keys">Keys</option>
+            <option value="Books">Books</option>
+            <option value="Bottle">Bottle</option>
+            <option value="Others">Others</option>
+          </select>
+
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="">All Types</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+          </select>
+
           <input
             type="text"
-            placeholder=" Search items..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            placeholder=" Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
           />
 
-          <div className="filters-row">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              <option value="Electronics">Electronics</option>
-              <option value="ID Card">ID Card</option>
-              <option value="Wallet">Wallet</option>
-              <option value="Keys">Keys</option>
-              <option value="Books">Books</option>
-              <option value="Bottle">Bottle</option>
-              <option value="Others">Others</option>
-            </select>
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
 
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="">All Types</option>
-              <option value="lost">Lost</option>
-              <option value="found">Found</option>
-            </select>
-
-            <input
-              type="text"
-              placeholder=" Location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-            </select>
-
-            <button
-              type="button"
-              onClick={() => {
-                setSearch("");
-                setCategory("");
-                setType("");
-                setLocation("");
-              }}
-            >
-              Clear Filters
-            </button>
-          </div>
+          <button
+            type="button"
+            className="clear-btn"
+            onClick={() => {
+              setSearch("");
+              setCategory("");
+              setType("");
+              setLocation("");
+              setSort("newest");
+            }}
+          >
+            Clear Filters
+          </button>
         </div>
       </section>
 
@@ -137,8 +150,8 @@ function Home() {
             <h2>Recently Added Items</h2>
 
             <p className="result-count">
-  {items.length} item{items.length !== 1 ? "s" : ""} found
-</p>
+              {items.length} item{items.length !== 1 ? "s" : ""} found
+            </p>
           </div>
 
           <Link to="/dashboard">View All</Link>
@@ -158,6 +171,8 @@ function Home() {
                 location={item.location}
                 date={new Date(item.date).toLocaleDateString()}
                 photoUrl={item.photoUrl}
+                type={item.type}
+                category={item.category}
               />
             ))
           ) : (

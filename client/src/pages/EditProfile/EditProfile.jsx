@@ -8,9 +8,9 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-const [selectedImage, setSelectedImage] = useState(null);
-const [previewImage, setPreviewImage] = useState("");
-const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,22 +24,30 @@ const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
+  const [passwordLoading, setPasswordLoading] = useState(false);
+
+
+  
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        "http://localhost:5000/api/users/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get("http://localhost:5000/api/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
 
       const user = res.data.user;
 
@@ -66,47 +74,53 @@ const [uploading, setUploading] = useState(false);
     }));
   };
 
+  const handlePasswordChange = (e) => {
+    setPasswordData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleImageChange = (e) => {
-  const file = e.target.files[0];
+    const file = e.target.files[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  setSelectedImage(file);
-  setPreviewImage(URL.createObjectURL(file));
-};
+    setSelectedImage(file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
 
-const uploadPhoto = async () => {
-  if (!selectedImage) return;
+  const uploadPhoto = async () => {
+    if (!selectedImage) return;
 
-  try {
-    setUploading(true);
+    try {
+      setUploading(true);
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    const data = new FormData();
-    data.append("photo", selectedImage);
+      const data = new FormData();
+      data.append("photo", selectedImage);
 
-    const res = await axios.put(
-      "http://localhost:5000/api/users/profile/photo",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await axios.put(
+        "http://localhost:5000/api/users/profile/photo",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      }
-    );
+      );
 
-    setPreviewImage(res.data.profilePhoto);
+      setPreviewImage(res.data.profilePhoto);
 
-    alert("Photo updated successfully!");
-
-  } catch (error) {
-    console.log(error);
-    alert("Photo upload failed.");
-  } finally {
-    setUploading(false);
-  }
-};
+      alert("Photo updated successfully!");
+    } catch (error) {
+      console.log(error);
+      alert("Photo upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,7 +143,7 @@ const uploadPhoto = async () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       alert("Profile updated successfully!");
@@ -143,160 +157,233 @@ const uploadPhoto = async () => {
     }
   };
 
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setPasswordLoading(true);
+
+      const token = localStorage.getItem("token");
+
+      const res = await axios.put(
+        "http://localhost:5000/api/users/change-password",
+        passwordData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      alert(res.data.message);
+
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to update password.");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
   if (loading) {
-    return (
-      <div className="edit-profile-loading">
-        Loading...
-      </div>
-    );
+    return <div className="edit-profile-loading">Loading...</div>;
   }
 
   return (
     <div className="edit-profile-page">
       <div className="edit-profile-card">
+        <h1>Edit Profile</h1>
+        <p>Keep your CampusCrate profile up to date.</p>
 
-      <h1>Edit Profile</h1>
-<p>Keep your CampusCrate profile up to date.</p>
-
-<div className="edit-profile-content">
-
-  <div className="profile-card">
-
-    <input
-  type="file"
-  accept="image/*"
-  hidden
-  ref={fileInputRef}
-  onChange={handleImageChange}
-/>
-
-<div className="profile-avatar">
-
-  {previewImage ? (
-    <img
-      src={previewImage}
-      alt="Profile"
-      className="profile-image"
-    />
-  ) : (
-    formData.name.charAt(0).toUpperCase()
-  )}
-
-</div>
-
-<h3>{formData.name || "Your Name"}</h3>
-
-<p>{formData.email}</p>
-
-<button
-  type="button"
-  className="change-photo-btn"
-  onClick={() => fileInputRef.current.click()}
->
-  Choose Photo
-</button>
-
-{selectedImage && (
-  <button
-    type="button"
-    className="change-photo-btn"
-    onClick={uploadPhoto}
-    style={{ marginTop: "10px" }}
-  >
-    {uploading ? "Uploading..." : "Upload Photo"}
-  </button>
-)}
-
-  </div>
-
-  <form
-    className="profile-form"
-    onSubmit={handleSubmit}
-  >
-
-          <div className="form-group">
-            <label>Full Name</label>
+        <div className="edit-profile-content">
+          <div className="profile-card">
             <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              type="file"
+              accept="image/*"
+              hidden
+              ref={fileInputRef}
+              onChange={handleImageChange}
             />
-          </div>
 
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={formData.email}
-              disabled
-            />
-          </div>
+            <div className="profile-avatar">
+              {previewImage ? (
+                <img
+                  src={previewImage}
+                  alt="Profile"
+                  className="profile-image"
+                />
+              ) : (
+                formData.name.charAt(0).toUpperCase()
+              )}
+            </div>
 
-          <div className="form-group">
-            <label>College</label>
-            <input
-              type="text"
-              name="college"
-              value={formData.college}
-              onChange={handleChange}
-            />
-          </div>
+            <h3>{formData.name || "Your Name"}</h3>
 
-          <div className="form-group">
-            <label>Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
+            <p>{formData.email}</p>
 
-          <div className="form-group">
-            <label>Course</label>
-            <input
-              type="text"
-              name="course"
-              value={formData.course}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Bio</label>
-            <textarea
-              rows="4"
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="button-group">
             <button
               type="button"
-              className="cancel-btn"
-              onClick={() => navigate("/profile")}
+              className="change-photo-btn"
+              onClick={() => fileInputRef.current.click()}
             >
-              Cancel
+              Choose Photo
             </button>
 
-            <button
-              type="submit"
-              className="save-btn"
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </button>
+            {selectedImage && (
+              <button
+                type="button"
+                className="change-photo-btn"
+                onClick={uploadPhoto}
+                style={{ marginTop: "10px" }}
+              >
+                {uploading ? "Uploading..." : "Upload Photo"}
+              </button>
+            )}
           </div>
 
-       </form>
+
+
+
+
+
+          <form className="profile-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" value={formData.email} disabled />
+            </div>
+
+            <div className="form-group">
+              <label>College</label>
+              <input
+                type="text"
+                name="college"
+                value={formData.college}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Phone</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Course</label>
+              <input
+                type="text"
+                name="course"
+                value={formData.course}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Bio</label>
+              <textarea
+                rows="4"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="button-group">
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => navigate("/profile")}
+              >
+                Cancel
+              </button>
+
+              <button type="submit" className="save-btn" disabled={saving}>
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </form>
+
+
+
+<div className="security-section">
+
+<h3 className="security-heading">
+   Change Password
+</h3>
+
+  <form onSubmit={handlePasswordSubmit}>
+
+    <div className="form-group">
+      <label>Current Password</label>
+
+      <input
+        type="password"
+        name="currentPassword"
+        value={passwordData.currentPassword}
+        onChange={handlePasswordChange}
+        required
+      />
+    </div>
+
+    <div className="form-group">
+      <label>New Password</label>
+
+      <input
+        type="password"
+        name="newPassword"
+        value={passwordData.newPassword}
+        onChange={handlePasswordChange}
+        required
+      />
+    </div>
+
+    <div className="form-group">
+      <label>Confirm Password</label>
+
+      <input
+        type="password"
+        name="confirmPassword"
+        value={passwordData.confirmPassword}
+        onChange={handlePasswordChange}
+        required
+      />
+    </div>
+
+    <button
+      type="submit"
+      className="save-btn"
+      disabled={passwordLoading}
+    >
+      {passwordLoading
+        ? "Updating..."
+        : "Update Password"}
+    </button>
+
+  </form>
 
 </div>
 
-</div>
-</div>
+        </div>
+      </div>
+    </div>
   );
 };
 
