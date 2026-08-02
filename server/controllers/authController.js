@@ -75,6 +75,13 @@ const user = await User.findOne({ email }).select("+password");
       });
     }
 
+    if (user.blocked) {
+  return res.status(403).json({
+    success: false,
+    message: "Your account has been blocked by the admin.",
+  });
+}
+
     // Create JWT token
     const token = jwt.sign(
       {

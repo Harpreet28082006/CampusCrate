@@ -6,8 +6,13 @@ const {
   updateMyProfile,
   updateProfilePhoto,
   changePassword,
+  blockUser,
+  unblockUser,
 } = require("../controllers/userController");
-const { protect } = require("../middleware/authMiddleware");
+const {
+  protect,
+  adminOnly,
+} = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
 // Get logged-in user profile
@@ -29,4 +34,9 @@ router.put(
   changePassword
 );
 
+// Admin - Block User
+router.patch("/block/:id", protect, adminOnly, blockUser);
+
+// Admin - Unblock User
+router.patch("/unblock/:id", protect, adminOnly, unblockUser);
 module.exports = router;

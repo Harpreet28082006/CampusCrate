@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
   try {
     console.log("Authorization Header:", req.headers.authorization);
 
@@ -18,23 +19,39 @@ const protect = (req, res, next) => {
       : token;
 
     console.log("JWT Token:", jwtToken);
-    console.log("JWT Secret:", process.env.JWT_SECRET);
 
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
 
-    console.log("Decoded User:", decoded);
+    const user = await User.findById(decoded.id);
 
-    req.user = decoded;
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    if (user.blocked) {
+      return res.status(403).json({
+        success: false,
+        message: "Your account has been blocked by the admin.",
+      });
+    }
+
+    req.user = user;
 
     next();
+
   } catch (error) {
     console.log("JWT Error:", error);
+
     return res.status(401).json({
       success: false,
       message: "Invalid or expired token",
     });
   }
 };
+
 const adminOnly = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({
