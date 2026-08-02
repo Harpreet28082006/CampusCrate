@@ -1,3 +1,4 @@
+import ReportModal from "../../components/ReportModal/ReportModal";
 import ClaimModal from "../../components/ClaimModal/ClaimModal";
 import ContactOwnerModal from "../../components/ContactOwnerModal/ContactOwnerModal";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ function ItemDetails() {
   const [claimLoading, setClaimLoading] = useState(false);
 
   const [showContactModal, setShowContactModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   async function fetchItem() {
     try {
@@ -54,7 +56,7 @@ function ItemDetails() {
         },
       );
 
-      alert(data.message);
+     alert(error.response?.data?.message || "Failed to submit report.");
 
       setClaimMessage("");
 
@@ -154,6 +156,13 @@ function ItemDetails() {
             Contact Owner
           </button>
 
+          <button
+            className="report-btn"
+            onClick={() => setShowReportModal(true)}
+          >
+             Report Item
+          </button>
+
           {showClaimModal && (
             <ClaimModal
               itemId={item._id}
@@ -164,14 +173,19 @@ function ItemDetails() {
               onClose={() => setShowClaimModal(false)}
             />
           )}
-          {
-  showContactModal && (
-    <ContactOwnerModal
-      owner={item.postedBy}
-      closeModal={() => setShowContactModal(false)}
-    />
-  )
-}
+          {showContactModal && (
+            <ContactOwnerModal
+              owner={item.postedBy}
+              closeModal={() => setShowContactModal(false)}
+            />
+            
+          )}
+          {showReportModal && (
+  <ReportModal
+    itemId={item._id}
+    onClose={() => setShowReportModal(false)}
+  />
+)}
         </div>
       </div>
     </section>

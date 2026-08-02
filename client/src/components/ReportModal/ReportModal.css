@@ -1,0 +1,244 @@
+/* ==============================
+   OVERLAY
+============================== */
+
+.report-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(4px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+}
+
+/* ==============================
+   MODAL
+============================== */
+
+.report-modal{
+
+    width:100%;
+    max-width:400px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    box-shadow:0 30px 70px rgba(0,0,0,.15);
+
+    animation:popup .25s ease;
+
+}
+
+@keyframes popup{
+
+from{
+
+opacity:0;
+transform:scale(.94);
+
+}
+
+to{
+
+opacity:1;
+transform:scale(1);
+
+}
+
+}
+
+.report-modal h2{
+
+font-size:20px;
+
+margin-bottom:5px;
+
+color:var(--text);
+
+}
+
+.report-modal p{
+
+color:var(--text-light);
+
+line-height:1.7;
+
+margin-bottom:28px;
+
+}
+
+/* ==============================
+   REASONS
+============================== */
+
+.reason-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+margin-bottom:20px;
+
+}
+
+.reason-list label{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:10px 18px;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+cursor:pointer;
+
+transition:.25s;
+
+background:white;
+
+font-weight:300;
+
+font-size:13px;
+
+}
+
+.reason-list label:hover{
+
+border-color:var(--primary);
+
+background:#faf6f2;
+
+transform:translateX(4px);
+
+}
+
+.reason-list input{
+
+accent-color:var(--primary);
+
+width:8px;
+
+height:10px;
+
+cursor:pointer;
+
+}
+
+/* ==============================
+   BUTTONS
+============================== */
+
+.report-buttons{
+
+display:flex;
+
+justify-content:flex-end;
+
+gap:14px;
+
+}
+
+.report-buttons button{
+
+height:45px;
+
+padding:0 14px;
+
+border:none;
+
+border-radius:14px;
+
+font-size:13px;
+
+font-weight:400;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.cancel-btn{
+
+background:#F3F4F6;
+
+color:#832020;
+
+}
+
+.cancel-btn:hover{
+
+background:#E5E7EB;
+
+}
+
+.submit-btn{
+
+background:var(--primary);
+
+color:white;
+
+}
+
+.submit-btn:hover{
+
+background:var(--primary-dark);
+
+transform:translateY(-2px);
+
+}
+
+.submit-btn:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media(max-width:768px){
+
+.report-modal{
+
+padding:24px;
+
+}
+
+.report-modal h2{
+
+font-size:16px;
+
+}
+
+.report-buttons{
+
+flex-direction:column;
+
+}
+
+.report-buttons button{
+
+width:100%;
+
+}
+
+}
