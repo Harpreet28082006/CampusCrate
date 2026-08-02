@@ -1,4 +1,5 @@
 const Item = require("../models/Item");
+const Claim = require("../models/Claim");
 const cloudinary = require("../config/cloudinary");
 
 // Create a new lost/found item
@@ -160,6 +161,15 @@ const getMyItems = async (req, res) => {
       postedBy: req.user.id,
       type: "found",
     });
+    const totalReturnedItems = await Item.countDocuments({
+  postedBy: req.user.id,
+  status: "returned",
+});
+
+const pendingClaims = await Claim.countDocuments({
+  owner: req.user.id,
+  status: "pending",
+});
 
     res.status(200).json({
       success: true,
@@ -168,6 +178,8 @@ const getMyItems = async (req, res) => {
       totalItems,
       totalLostItems,
       totalFoundItems,
+      totalReturnedItems,
+      pendingClaims,
       count: items.length,
       items,
     });
