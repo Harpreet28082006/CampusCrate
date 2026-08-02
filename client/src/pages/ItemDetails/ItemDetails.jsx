@@ -1,4 +1,5 @@
 import ReportModal from "../../components/ReportModal/ReportModal";
+import QRModal from "../../components/QRModal/QRModal";
 import ClaimModal from "../../components/ClaimModal/ClaimModal";
 import ContactOwnerModal from "../../components/ContactOwnerModal/ContactOwnerModal";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ function ItemDetails() {
 
   const [showContactModal, setShowContactModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
 
   async function fetchItem() {
     try {
@@ -56,7 +58,7 @@ function ItemDetails() {
         },
       );
 
-     alert(error.response?.data?.message || "Failed to submit report.");
+      alert(error.response?.data?.message || "Failed to submit report.");
 
       setClaimMessage("");
 
@@ -65,6 +67,32 @@ function ItemDetails() {
       alert(error.response?.data?.message || "Failed to submit claim");
     } finally {
       setClaimLoading(false);
+    }
+  };
+
+  const handleReturnItem = async () => {
+    const confirmReturn = window.confirm("Mark this item as returned?");
+
+    if (!confirmReturn) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const { data } = await axios.patch(
+        `http://localhost:5000/api/items/${item._id}/status`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      alert(data.message);
+
+      fetchItem();
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -149,19 +177,31 @@ function ItemDetails() {
             </div>
           )}
 
-          <button
-            className="contact-btn"
-            onClick={() => setShowContactModal(true)}
-          >
-            Contact Owner
-          </button>
+          <div className="details-actions">
+            <button
+              className="contact-btn"
+              onClick={() => setShowContactModal(true)}
+            >
+              Contact Owner
+            </button>
 
-          <button
-            className="report-btn"
-            onClick={() => setShowReportModal(true)}
-          >
-             Report Item
-          </button>
+            <button
+              className="report-btn"
+              onClick={() => setShowReportModal(true)}
+            >
+              Report Item
+            </button>
+
+            <button className="qr-btn" onClick={() => setShowQRModal(true)}>
+              View QR
+            </button>
+
+            {item.status !== "returned" && (
+              <button className="return-btn" onClick={handleReturnItem}>
+                Mark Returned
+              </button>
+            )}
+          </div>
 
           {showClaimModal && (
             <ClaimModal
@@ -178,14 +218,17 @@ function ItemDetails() {
               owner={item.postedBy}
               closeModal={() => setShowContactModal(false)}
             />
-            
           )}
           {showReportModal && (
-  <ReportModal
-    itemId={item._id}
-    onClose={() => setShowReportModal(false)}
-  />
-)}
+            <ReportModal
+              itemId={item._id}
+              onClose={() => setShowReportModal(false)}
+            />
+          )}
+
+          {showQRModal && (
+            <QRModal item={item} onClose={() => setShowQRModal(false)} />
+          )}
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import "./PostFound.css";
 import Button from "../../components/Button/Button";
 
 function PostFound() {
@@ -15,7 +16,6 @@ function PostFound() {
 
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
-
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -140,116 +140,158 @@ function PostFound() {
   };
 
   return (
-    <section className="post-found">
-      <h1>Report Found Item</h1>
+  <section className="post-found-page">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Item Name"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
+    <div className="post-found-card">
 
-        <br />
-        <br />
+      <div className="post-header">
 
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Category</option>
-          <option value="Electronics">Electronics</option>
-          <option value="ID Card">ID Card</option>
-          <option value="Wallet">Wallet</option>
-          <option value="Keys">Keys</option>
-          <option value="Books">Books</option>
-          <option value="Bottle">Bottle</option>
-          <option value="Others">Others</option>
-        </select>
+        <h1>Report Found Item</h1>
 
-        <br />
-        <br />
+        <p>
+          Tell us about the item you've found so we can reconnect it with its owner.
+        </p>
 
-        <input
-          type="text"
-          name="location"
-          placeholder="Found Location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
+      </div>
 
-        <br />
-        <br />
+      <form
+        className="found-form"
+        onSubmit={handleSubmit}
+      >
 
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
+        <div className="form-group">
 
-        <br />
-        <br />
+          <label>Item Name *</label>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          rows="5"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        ></textarea>
+          <input
+            type="text"
+            name="title"
+            placeholder="e.g. Black Wallet"
+            value={formData.title}
+            onChange={handleChange}
+          />
 
-        <br />
-        <br />
+        </div>
 
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
-        />
+        <div className="form-group">
 
-        <br />
-        <br />
+          <label>Category *</label>
 
-        <Button
-          text={loading ? "Submitting..." : "Submit Found Item"}
-          type="submit"
-          disabled={loading}
-        />
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="">Select Category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Keys">Keys</option>
+            <option value="Books">Books</option>
+            <option value="Bottle">Bottle</option>
+            <option value="Others">Others</option>
+          </select>
+
+        </div>
+
+        <div className="form-group">
+
+          <label>Found Location *</label>
+
+          <input
+            type="text"
+            name="location"
+            placeholder="e.g. Library Block C"
+            value={formData.location}
+            onChange={handleChange}
+          />
+
+        </div>
+
+        <div className="form-group">
+
+          <label>Date Found *</label>
+
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+          />
+
+        </div>
+
+        <div className="form-group full-width">
+
+          <label>Description *</label>
+
+          <textarea
+            rows="5"
+            name="description"
+            placeholder="Provide more details..."
+            value={formData.description}
+            onChange={handleChange}
+          />
+
+        </div>
+
+        <div className="form-group full-width">
+
+          <label>Upload Photo (Optional)</label>
+
+          <label
+            htmlFor="image"
+            className="upload-box"
+          >
+
+            <span className="upload-icon">☁️</span>
+
+            <h4>Drag & Drop Image</h4>
+
+            <p>or click to browse</p>
+
+            <input
+              id="image"
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+              hidden
+            />
+
+          </label>
+
+        </div>
+
+        {preview && (
+
+          <div className="preview-box full-width">
+
+            <img
+              src={preview}
+              alt="Preview"
+            />
+
+          </div>
+
+        )}
+
+        <div className="submit-area full-width">
+
+          <Button
+            text={loading ? "Submitting..." : "Submit Found Item"}
+            type="submit"
+            disabled={loading}
+          />
+
+        </div>
+
       </form>
 
+    </div>
 
-
-{preview && (
-  <>
-    <br />
-
-    <img
-      src={preview}
-      alt="Preview"
-      style={{
-        width: "220px",
-        borderRadius: "10px",
-        objectFit: "cover",
-      }}
-    />
-
-    <br />
-    <br />
-  </>
-)}
-
-    </section>
-  );
+  </section>
+);
 }
 
 export default PostFound;

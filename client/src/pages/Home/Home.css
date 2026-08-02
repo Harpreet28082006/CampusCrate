@@ -475,12 +475,8 @@ font-size:15px;
 .items-grid{
 
     display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(250px,2fr));
-
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:32px;
-
 }
 
 /* ===========================

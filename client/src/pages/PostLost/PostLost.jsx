@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import "./PostLost.css";
 import Button from "../../components/Button/Button";
 
 function PostLost() {
@@ -15,7 +16,6 @@ function PostLost() {
 
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
-
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -131,7 +131,6 @@ function PostLost() {
       });
 
       setPreview("");
-
     } catch (error) {
       console.log(error.response);
       console.log(error.response?.data);
@@ -143,29 +142,46 @@ function PostLost() {
   };
 
   return (
-    <section className="post-lost">
+    <section className="post-lost-page">
+
+  <div className="post-lost-card">
+
+    <div className="post-header">
+
       <h1>Report Lost Item</h1>
 
-      <form onSubmit={handleSubmit}>
+      <p>
+        Tell us about your lost item so we can help you find it.
+      </p>
+
+    </div>
+
+    <form
+      className="lost-form"
+      onSubmit={handleSubmit}
+    >
+
+      <div className="form-group">
+        <label>Item Name *</label>
+
         <input
           type="text"
           name="title"
-          placeholder="Item Name"
+          placeholder="e.g. Black Wallet"
           value={formData.title}
           onChange={handleChange}
-          required
         />
+      </div>
 
-        <br />
-        <br />
+      <div className="form-group">
+        <label>Category *</label>
 
         <select
           name="category"
           value={formData.category}
           onChange={handleChange}
-          required
         >
-          <option value="">Select Category</option>
+          <option value="">Select category</option>
           <option value="Electronics">Electronics</option>
           <option value="ID Card">ID Card</option>
           <option value="Wallet">Wallet</option>
@@ -174,82 +190,99 @@ function PostLost() {
           <option value="Bottle">Bottle</option>
           <option value="Others">Others</option>
         </select>
+      </div>
 
-        <br />
-        <br />
+      <div className="form-group">
+        <label>Lost Location *</label>
 
         <input
           type="text"
           name="location"
-          placeholder="Lost Location"
+          placeholder="e.g. Library Block C"
           value={formData.location}
           onChange={handleChange}
-          required
         />
+      </div>
 
-        <br />
-        <br />
+      <div className="form-group">
+        <label>Date Lost *</label>
 
         <input
           type="date"
           name="date"
           value={formData.date}
           onChange={handleChange}
-          required
         />
+      </div>
 
-        <br />
-        <br />
+      <div className="form-group full-width">
+        <label>Description *</label>
 
         <textarea
-          name="description"
-          placeholder="Description"
           rows="5"
+          name="description"
+          placeholder="Provide more details..."
           value={formData.description}
           onChange={handleChange}
-          required
-        ></textarea>
-
-        <br />
-        <br />
-
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
         />
+      </div>
 
-        <br />
-        <br />
+      <div className="form-group full-width">
+
+        <label>Upload Photo (Optional)</label>
+
+        <label
+          htmlFor="image"
+          className="upload-box"
+        >
+
+          <span className="upload-icon">☁️</span>
+
+          <h4>Drag & Drop Image</h4>
+
+          <p>or click to browse</p>
+
+          <input
+            id="image"
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+            hidden
+          />
+
+        </label>
+
+      </div>
+
+      {preview && (
+
+        <div className="preview-box full-width">
+
+          <img
+            src={preview}
+            alt="Preview"
+          />
+
+        </div>
+
+      )}
+
+      <div className="full-width submit-area">
 
         <Button
           text={loading ? "Submitting..." : "Submit Lost Item"}
           type="submit"
           disabled={loading}
         />
-      </form>
 
+      </div>
 
-    {preview && (
-  <>
-    <br />
+    </form>
 
-    <img
-      src={preview}
-      alt="Preview"
-      style={{
-        width: "220px",
-        borderRadius: "10px",
-        objectFit: "cover",
-      }}
-    />
+  </div>
 
-    <br />
-    <br />
-  </>
-)}
-    </section>
+</section>
   );
 }
 
