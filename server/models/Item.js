@@ -39,6 +39,11 @@ const itemSchema = new mongoose.Schema(
       default: "",
     },
 
+    qrCode: {
+  type: String,
+  default: "",
+},
+
     status: {
       type: String,
       enum: ["active", "claimed", "returned"],

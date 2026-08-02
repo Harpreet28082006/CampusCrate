@@ -1,8 +1,7 @@
 const Claim = require("../models/Claim");
 const Item = require("../models/Item");
+const Notification = require("../models/Notification");
 
-
-// Create a claim
 const createClaim = async (req, res) => {
   try {
     const { itemId, message } = req.body;
@@ -16,7 +15,6 @@ const createClaim = async (req, res) => {
       });
     }
 
-
     // Prevent claiming own item
     if (item.postedBy.toString() === req.user.id) {
       return res.status(400).json({
@@ -25,13 +23,11 @@ const createClaim = async (req, res) => {
       });
     }
 
-
     // Prevent duplicate claim
     const existingClaim = await Claim.findOne({
       itemId,
       claimantId: req.user.id,
     });
-
 
     if (existingClaim) {
       return res.status(400).json({
@@ -40,13 +36,24 @@ const createClaim = async (req, res) => {
       });
     }
 
-
     const claim = await Claim.create({
       itemId,
       claimantId: req.user.id,
       message,
     });
 
+console.log("Creating notification...");    
+    // Create Notification
+    await Notification.create({
+      user: item.postedBy,
+      title: "New Claim Received",
+      message: `${req.user.name} has submitted a claim for your item "${item.title}".`,
+      type: "claim",
+      relatedItem: item._id,
+      relatedClaim: claim._id,
+    });
+
+console.log("Notification created successfully");
 
     res.status(201).json({
       success: true,
@@ -54,18 +61,13 @@ const createClaim = async (req, res) => {
       claim,
     });
 
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
-
 
 // Get all claims for a specific item
 const getClaimsForItem = async (req, res) => {
@@ -153,7 +155,22 @@ const approveClaim = async (req, res) => {
 
 
     claim.status = "approved";
-
+await Notification.create({
+  user: claim.claimantId,
+  title: "Claim Approved",
+  message: "Congratulations! Your claim has been approved by the item owner.",
+  type: "claim",
+  relatedItem: claim.itemId,
+  relatedClaim: claim._id,
+});
+await Notification.create({
+  user: claim.claimantId,
+  title: "Claim Rejected",
+  message: "Your claim has been rejected by the item owner.",
+  type: "claim",
+  relatedItem: claim.itemId,
+  relatedClaim: claim._id,
+});
     await claim.save();
 
 

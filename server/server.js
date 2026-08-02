@@ -14,6 +14,8 @@ const authRoutes = require("./routes/authRoutes");
 const claimRoutes = require("./routes/claimRoutes");
 const userRoutes = require("./routes/userRoutes");
 const app = express();
+const messageRoutes = require("./routes/messageRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 // Connect to MongoDB
 connectDB();
@@ -35,6 +37,8 @@ app.use("/api/claims", claimRoutes);
 const dashboardRoutes = require("./routes/dashboardRoutes");
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

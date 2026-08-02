@@ -1,13 +1,12 @@
 const Item = require("../models/Item");
 const Claim = require("../models/Claim");
 const cloudinary = require("../config/cloudinary");
+const QRCode = require("qrcode");
 
 // Create a new lost/found item
 const createItem = async (req, res) => {
-  // console.log("BODY:", req.body);
-  // console.log("FILE:", req.file);
-
   try {
+
     const item = await Item.create({
       ...req.body,
       tags: req.body.tags
@@ -16,18 +15,53 @@ const createItem = async (req, res) => {
       photoUrl: req.file ? req.file.path : "",
       postedBy: req.user.id,
     });
+    const qrData = JSON.stringify({
+  itemId: item._id,
+  title: item.title,
+  type: item.type,
+});
+
+const qrImage = await QRCode.toDataURL(qrData);
+
+item.qrCode = qrImage;
+
+await item.save();
+
+    // -----------------------------
+    // AUTO MATCHING
+    // -----------------------------
+
+    const oppositeType =
+      item.type === "lost" ? "found" : "lost";
+
+    const matches = await Item.find({
+      type: oppositeType,
+      status: "active",
+      category: item.category,
+      location: {
+        $regex: item.location,
+        $options: "i",
+      },
+    }).select(
+      "title category location date photoUrl postedBy"
+    );
 
     res.status(201).json({
       success: true,
       message: "Item created successfully",
       item,
+      possibleMatches: matches,
     });
+
   } catch (error) {
+
     console.log(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
     });
+
   }
 };
 
