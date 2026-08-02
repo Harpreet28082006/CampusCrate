@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import HeroImage from "../../assets/illustrations/image.png";
 import "./Home.css";
 
 import EmptySearch from "../../assets/illustrations/empty-search.svg";
-
-
 
 import Button from "../../components/Button/Button";
 import ItemCard from "../../components/ItemCard/ItemCard";
@@ -14,36 +13,32 @@ function Home() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [totalItems, setTotalItems] = useState(0);
+
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [category, setCategory] = useState("");
   const categories = [
-  "Electronics",
-  "ID Card",
-  "Wallet",
-  "Keys",
-  "Books",
-  "Bottle",
-  "Others",
-];
+    "Electronics",
+    "ID Card",
+    "Wallet",
+    "Keys",
+    "Books",
+    "Bottle",
+    "Others",
+  ];
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
   const [status, setStatus] = useState("");
   const [sort, setSort] = useState("newest");
 
-  const lostCount = items.filter(
-(item)=>item.type==="lost"
-).length;
+  //
 
-const foundCount = items.filter(
-(item)=>item.type==="found"
-).length;
-
-const locationCount = new Set(
-items.map(item=>item.location)
-).size;
-
-  async function fetchItems() {
+  async function fetchItems(page = currentPage) {
     setLoading(true);
 
     try {
@@ -58,11 +53,19 @@ items.map(item=>item.location)
       if (status) params.append("status", status);
       params.append("sort", sort);
 
+      params.append("page", page);
+      params.append("limit", 6);
+
       const { data } = await axios.get(
         `http://localhost:5000/api/items?${params.toString()}`,
       );
+      console.log("Items Returned:", data.items.length);
+console.log("Total Pages:", data.totalPages);
+console.log("Total Items:", data.totalItems);
 
       setItems(data.items);
+      setTotalPages(data.totalPages);
+      setTotalItems(data.totalItems);
     } catch (error) {
       console.error("Error fetching items:", error);
     } finally {
@@ -79,117 +82,128 @@ items.map(item=>item.location)
   }, [search]);
 
   useEffect(() => {
-    fetchItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, category, type, location,status, sort]);
+    fetchItems(currentPage);
+  }, [debouncedSearch, category, type, location, status, sort, currentPage]);
 
   return (
     <>
+      <div className="announcement-bar">
+        <div className="announcement-text">
+          🚀 CampusCrate Beta is now live for all college students.
+        </div>
+
+        <button className="announcement-btn">Explore</button>
+      </div>
       <section className="hero">
         <div className="hero-content">
-          <span className="hero-badge">
-            Trusted Campus Lost & Found Platform
-          </span>
+          <div className="hero-left">
+            <span className="hero-badge">
+              Trusted Campus Lost & Found Platform
+            </span>
+            <h1>
+              Reconnect Lost
+              <br />
+              <span>Belongings Faster.</span>
+            </h1>
 
-          <h1>
-            Lost something
-            <br />
-            on campus?
-          </h1>
+            <p>
+              We help students report lost belongings, discover found items and
+              reconnect with their rightful owners — quickly and securely.
+            </p>
 
-          <p>
-            We help students report lost belongings, discover found items and
-            reconnect with their rightful owners — quickly and securely.
-          </p>
+            <div className="hero-buttons">
+              <Link to="/post-lost">
+                <Button text="Report Lost" />
+              </Link>
 
-          <div className="hero-buttons">
-            <Link to="/post-lost">
-              <Button text="Report Lost" />
-            </Link>
-
-            <Link to="/post-found">
-              <Button text="Report Found" />
-            </Link>
+              <Link to="/post-found">
+                <Button text="Report Found" />
+              </Link>
+            </div>
+          </div>
+          <div className="hero-right">
+            <img src={HeroImage} alt="" />
           </div>
         </div>
       </section>
 
       <section className="advanced-search">
-       <div className="search-box">
+        <div className="search-box">
+          <span className="search-icon"></span>
 
-  <span className="search-icon"></span>
+          <input
+            type="text"
+            placeholder="Search lost or found items..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
+          />
+        </div>
 
-  <input
-    type="text"
-    placeholder="Search lost or found items..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
+        <div className="category-chips">
+          {categories.map((item) => (
+            <button
+              key={item}
+              type="button"
+              className={`chip ${category === item ? "active-chip" : ""}`}
+              onClick={() => {
+                setCategory(category === item ? "" : item);
+                setCurrentPage(1);
+              }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
 
-</div>
-
-<div className="category-chips">
-
-  {categories.map((item) => (
-
-    <button
-      key={item}
-      type="button"
-      className={`chip ${
-        category === item ? "active-chip" : ""
-      }`}
-      onClick={() =>
-        setCategory(category === item ? "" : item)
-      }
-    >
-      {item}
-    </button>
-
-  ))}
-
-</div>
-
-<div className="filters-row">
-          
-
-          <select value={type} onChange={(e) => setType(e.target.value)}>
+        <div className="filters-row">
+          <select
+            value={type}
+            onChange={(e) => {
+              setType(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
             <option value="">All Types</option>
             <option value="lost">Lost</option>
             <option value="found">Found</option>
           </select>
 
-
           <select
-value={status}
-onChange={(e)=>setStatus(e.target.value)}
->
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">All Status</option>
 
-<option value="">
-All Status
-</option>
+            <option value="active">Active</option>
 
-<option value="active">
-Active
-</option>
+            <option value="claimed">Claimed</option>
 
-<option value="claimed">
-Claimed
-</option>
-
-<option value="returned">
-Returned
-</option>
-
-</select>
+            <option value="returned">Returned</option>
+          </select>
 
           <input
             type="text"
             placeholder=" Location"
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              setCurrentPage(1);
+            }}
           />
 
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+          <select
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
           </select>
@@ -201,120 +215,56 @@ Returned
               setSearch("");
               setCategory("");
               setType("");
-              setLocation("");
               setStatus("");
+              setLocation("");
               setSort("newest");
+              setCurrentPage(1);
             }}
           >
             Clear Filters
           </button>
         </div>
         <div className="active-filters">
+          {category && (
+            <button className="filter-pill" onClick={() => setCategory("")}>
+              {category} ✕
+            </button>
+          )}
 
-  {category && (
-    <button
-      className="filter-pill"
-      onClick={() => setCategory("")}
-    >
-      {category} ✕
-    </button>
-  )}
+          {type && (
+            <button className="filter-pill" onClick={() => setType("")}>
+              {type} ✕
+            </button>
+          )}
 
-  {type && (
-    <button
-      className="filter-pill"
-      onClick={() => setType("")}
-    >
-      {type} ✕
-    </button>
-  )}
+          {status && (
+            <button className="filter-pill" onClick={() => setStatus("")}>
+              {status} ✕
+            </button>
+          )}
 
-  {status && (
-    <button
-      className="filter-pill"
-      onClick={() => setStatus("")}
-    >
-      {status} ✕
-    </button>
-  )}
-
-  {location && (
-    <button
-      className="filter-pill"
-      onClick={() => setLocation("")}
-    >
-      {location} ✕
-    </button>
-  )}
-
-</div>
+          {location && (
+            <button className="filter-pill" onClick={() => setLocation("")}>
+              {location} ✕
+            </button>
+          )}
+        </div>
       </section>
 
       <section className="items-section">
-        <div className="stats-grid">
-
-<div className="stat-box">
-
-<div className="stat-icon">
-
-</div>
-
-<h3>{items.length}</h3>
-
-<p>Total Items</p>
-
-</div>
-
-<div className="stat-box">
-
-<div className="stat-icon">
-
-</div>
-
-<h3>{lostCount}</h3>
-
-<p>Lost</p>
-
-</div>
-
-<div className="stat-box">
-
-<div className="stat-icon">
-
-</div>
-
-<h3>{foundCount}</h3>
-
-<p>Found</p>
-
-</div>
-
-<div className="stat-box">
-
-<div className="stat-icon">
-
-</div>
-
-<h3>{locationCount}</h3>
-
-<p>Locations</p>
-
-</div>
-
-</div>
         <div className="section-heading">
           <div>
             <h2>Recently Added Items</h2>
 
             <p className="result-count">
-              {items.length} item{items.length !== 1 ? "s" : ""} found
+              {totalItems} item{totalItems !== 1 ? "s" : ""} found
             </p>
           </div>
 
           <Link to="/dashboard">View All</Link>
         </div>
 
-        <div className="items-grid">
+        <div className="items-list">
           {loading ? (
             <div className="loading-container">
               <div className="loader"></div>
@@ -333,38 +283,67 @@ Returned
               />
             ))
           ) : (
-           <div className="empty-state">
+            <div className="empty-state">
+              <img src={EmptySearch} alt="No results" className="empty-image" />
 
-<img
-  src={EmptySearch}
-  alt="No results"
-  className="empty-image"
-/>
+              <h3>No matching items found</h3>
 
-  <h3>No matching items found</h3>
+              <p>
+                We couldn't find any items matching your search. Try adjusting
+                your filters or search with different keywords.
+              </p>
 
-  <p>
-    We couldn't find any items matching your search.
-    Try adjusting your filters or search with different keywords.
-  </p>
-
-  <button
-    className="empty-reset-btn"
-    onClick={() => {
-      setSearch("");
-      setCategory("");
-      setType("");
-      setStatus("");
-      setLocation("");
-      setSort("newest");
-    }}
-  >
-    Clear All Filters
-  </button>
-
-</div>
+              <button
+                className="empty-reset-btn"
+                onClick={() => {
+                  setSearch("");
+                  setCategory("");
+                  setType("");
+                  setStatus("");
+                  setLocation("");
+                  setSort("newest");
+                }}
+              >
+                Clear All Filters
+              </button>
+            </div>
           )}
         </div>
+
+        
+
+
+        {/* PAGINATION START */}
+
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              ←
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                className={currentPage === index + 1 ? "active-page" : ""}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              →
+            </button>
+          </div>
+        )}
+
+        {/* PAGINATION END */}
       </section>
     </>
   );
