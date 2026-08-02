@@ -18,11 +18,11 @@ font-family:"Poppins",sans-serif;
 
 .hero-banner{
 
-background:#DDD2FF;
+background:#EFE6DB;
 
 border-radius:28px;
 
-padding:45px;
+padding:20px;
 
 display:flex;
 
@@ -128,23 +128,8 @@ color:#6C63FF;
 
 }
 
-.hero-right img{
 
-width:330px;
 
-animation:float 4s ease-in-out infinite;
-
-}
-
-@keyframes float{
-
-0%{transform:translateY(0);}
-
-50%{transform:translateY(-10px);}
-
-100%{transform:translateY(0);}
-
-}
 
 /*==============================
 STATS

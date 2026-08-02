@@ -271,11 +271,11 @@ function MyItems() {
         </p>
 
         <div className="pagination">
-          <button disabled>← Previous</button>
+          <button disabled>← </button>
 
           <button className="active-page">1</button>
 
-          <button disabled>Next →</button>
+          <button disabled> →</button>
         </div>
       </div>
     </section>

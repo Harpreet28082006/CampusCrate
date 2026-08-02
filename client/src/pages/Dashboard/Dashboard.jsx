@@ -100,12 +100,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="hero-right">
-          <img
-            src="https://ouch-cdn2.icons8.com/4S5EQjWHwV4tz6aL4eQF4kQxJv3KxH3H3oQ8GQK6mUk/rs:fit:512:512/czM6Ly9pY29uczgvb3VjaC1wcm9kL3ByZXZpZXcvNjg2L2I3ZDA0ZjA4LTBkYmEtNDAxYi04ZTE5LWJmZmQwMzE5MjBhNi5wbmc.png"
-            alt="Illustration"
-          />
-        </div>
+       
       </div>
 
       {/* ================= STATS ================= */}

@@ -43,16 +43,18 @@
 
 .post-btn{
     text-decoration:none;
-    background:#2563eb;
+    background:#8b5e3c;
     color:white;
     padding:14px 24px;
     border-radius:12px;
     font-weight:600;
     transition:.3s;
+    border:1px solid transparent;
 }
 
 .post-btn:hover{
-    background:#1d4ed8;
+    background:#3fb662;
+    
 }
 
 /* STATS */
@@ -79,12 +81,12 @@
 }
 
 .stat-box.active{
-    border-color:#2563eb;
+    border-color:#8b5e3c;
 }
 
 .stat-box h2{
     font-size:34px;
-    color:#2563eb;
+    color:#8b5e3c;
     margin-bottom:8px;
 }
 
@@ -215,7 +217,7 @@
 
 .view-btn{
     text-decoration:none;
-    background:#2563eb;
+    background:#8b5e3c;
     color:white;
     padding:9px 16px;
     border-radius:10px;
