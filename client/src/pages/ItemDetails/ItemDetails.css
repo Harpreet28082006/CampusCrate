@@ -301,3 +301,66 @@ width:100%;
 .report-btn:hover{
     background:#FEE2E2;
 }
+
+/* ===========================
+   ACTION BUTTONS
+=========================== */
+
+.details-actions{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:24px;
+}
+
+.qr-btn,
+.return-btn{
+
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.qr-btn{
+
+    background:#EEF6FF;
+
+    color:#2563EB;
+}
+
+.qr-btn:hover{
+
+    background:#DBEAFE;
+}
+
+.return-btn{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+}
+
+.return-btn:hover{
+
+    background:#BBF7D0;
+}
+
+@media(max-width:768px){
+
+.details-actions{
+
+grid-template-columns:1fr;
+
+}
+
+}
