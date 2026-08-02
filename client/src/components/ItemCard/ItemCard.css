@@ -201,3 +201,24 @@ font-size:20px;
 }
 
 }
+
+.item-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:18px;
+}
+
+.report-card-btn{
+    background:none;
+    border:none;
+    color:#dc2626;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.report-card-btn:hover{
+    color:#b91c1c;
+}
