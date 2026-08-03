@@ -10,6 +10,7 @@ import Profile from "./pages/Profile/Profile";
 import PostLost from "./pages/PostLost/PostLost";
 import PostFound from "./pages/PostFound/PostFound";
 import ItemDetails from "./pages/ItemDetails/ItemDetails";
+import Notifications from "./pages/Notifications/Notifications";
 import EditItem from "./pages/EditItem/EditItem";
 import EditProfile from "./pages/EditProfile/EditProfile";
 import Admin from "./pages/Admin/Admin";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/post-lost" element={<PostLost />} />
           <Route path="/post-found" element={<PostFound />} />
           <Route path="/my-items" element={<MyItems />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/item/:id" element={<ItemDetails />} />
           <Route path="/edit-item/:id" element={<EditItem />} />
           <Route path="/admin" element={<Admin />} />
