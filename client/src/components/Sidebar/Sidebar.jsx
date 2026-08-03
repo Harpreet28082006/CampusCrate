@@ -29,7 +29,7 @@ function Sidebar() {
       {/* Logo */}
 
       <div className="sidebar-logo">
-        <div className="logo-box">📦</div>
+        {/* <div className="logo-box"></div> */}
 
         <div>
           <h2>CampusCrate</h2>
@@ -95,10 +95,10 @@ function Sidebar() {
           Profile
         </NavLink>
 
-        <NavLink to="/settings">
+        {/* <NavLink to="/settings">
           <Settings size={18} />
           Settings
-        </NavLink>
+        </NavLink> */}
       </nav>
 
       {/* <div className="premium-card">

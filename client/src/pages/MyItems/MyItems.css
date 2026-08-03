@@ -1,7 +1,8 @@
 .my-items-page{
-    padding:40px;
-    background:#F8F6F2;
+    /* padding:40px; */
+    /* background:#F8F6F2; */
     min-height:100vh;
+    margin:0 ;
 }
 
 .myitems-header{
