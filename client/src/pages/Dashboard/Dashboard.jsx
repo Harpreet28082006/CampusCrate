@@ -106,7 +106,7 @@ function Dashboard() {
       {/* ================= STATS ================= */}
 
       <div className="stats-grid">
-        <div className="stats-card yellow">
+        <div className="stats-card ">
           <div className="card-icon">📊</div>
 
           <div>
@@ -115,7 +115,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="stats-card purple">
+        <div className="stats-card ">
           <div className="card-icon">📍</div>
 
           <div>
@@ -124,7 +124,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="stats-card pink">
+        <div className="stats-card ">
           <div className="card-icon">🎒</div>
 
           <div>
@@ -133,7 +133,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="stats-card blue">
+        <div className="stats-card ">
           <div className="card-icon">✅</div>
 
           <div>

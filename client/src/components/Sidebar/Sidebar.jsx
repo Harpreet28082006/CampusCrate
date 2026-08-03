@@ -58,10 +58,10 @@ function Sidebar() {
           Home
         </NavLink>
 
-        <NavLink to="/dashboard">
+        {/* <NavLink to="/dashboard">
           <LayoutDashboard size={18} />
           Dashboard
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="/my-items">
           <PackageSearch size={18} />
@@ -78,14 +78,21 @@ function Sidebar() {
           Report Found
         </NavLink>
 
-        <NavLink to="/profile">
-          <User size={18} />
-          Profile
-        </NavLink>
 
+         <NavLink to="/messages">💬 Messages</NavLink>
+
+
+      
         <NavLink to="/notifications">
           <Bell size={18} />
           Notifications
+        </NavLink>
+
+       
+
+        <NavLink to="/profile">
+          <User size={18} />
+          Profile
         </NavLink>
 
         <NavLink to="/settings">
@@ -94,7 +101,7 @@ function Sidebar() {
         </NavLink>
       </nav>
 
-      <div className="premium-card">
+      {/* <div className="premium-card">
         <Crown size={28} />
 
         <h3>Go Premium</h3>
@@ -102,7 +109,7 @@ function Sidebar() {
         <p>Unlock premium CampusCrate features and priority support.</p>
 
         <button>Upgrade Now</button>
-      </div>
+      </div> */}
 
       <button className="logout-side" onClick={logout}>
         <LogOut size={18} />

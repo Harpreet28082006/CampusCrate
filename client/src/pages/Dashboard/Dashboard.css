@@ -18,11 +18,12 @@ font-family:"Poppins",sans-serif;
 
 .hero-banner{
 
-background:#EFE6DB;
+background:#efe6db41;
+border: 1px solid #e0d4c3;
 
 border-radius:28px;
 
-padding:20px;
+padding: 20px;
 
 display:flex;
 
@@ -48,7 +49,7 @@ font-size:14px;
 
 font-weight:600;
 
-color:#5A4BB7;
+color:#8B5E3C;
 
 letter-spacing:.5px;
 
@@ -114,7 +115,7 @@ transform:translateY(-4px);
 
 .lost-btn{
 
-background:#6C63FF;
+background:#8b5e3c;
 
 color:white;
 
@@ -124,7 +125,7 @@ color:white;
 
 background:white;
 
-color:#6C63FF;
+color:#8b5e3c;
 
 }
 
@@ -164,7 +165,8 @@ transition:.3s;
 cursor:pointer;
 
 box-shadow:0 12px 35px rgba(0,0,0,.05);
-
+background-color:white;
+border: 1px solid #e0d4c3;
 }
 
 .stats-card:hover{
@@ -182,7 +184,7 @@ height:68px;
 border-radius:18px;
 
 background:white;
-
+border: 1px solid #e0d4c3;
 display:flex;
 
 justify-content:center;
@@ -261,14 +263,14 @@ transform:translateY(-5px);
 
 .pending-card{
 
-background:#FFF0D2;
-
+background-color:white;
+border: 1px solid #e0d4c3;
 }
 
 .success-card{
 
-background:#DCEEFF;
-
+background-color:white;
+border: 1px solid #e0d4c3;
 }
 
 .mini-icon{

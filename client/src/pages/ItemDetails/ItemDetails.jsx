@@ -3,6 +3,7 @@ import ReportModal from "../../components/ReportModal/ReportModal";
 import QRModal from "../../components/QRModal/QRModal";
 import ClaimModal from "../../components/ClaimModal/ClaimModal";
 import ContactOwnerModal from "../../components/ContactOwnerModal/ContactOwnerModal";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -22,6 +23,7 @@ function ItemDetails() {
   const [showContactModal, setShowContactModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
+  const navigate = useNavigate();
 
   const [similarItems, setSimilarItems] = useState([]);
 
@@ -39,21 +41,18 @@ function ItemDetails() {
   }
 
   const fetchSimilarItems = async (category) => {
-  try {
-    const { data } = await axios.get(
-      `http://localhost:5000/api/items?category=${category}&limit=4`
-    );
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/items?category=${category}&limit=4`,
+      );
 
-    const filtered = data.items.filter(
-      (i) => i._id !== id
-    );
+      const filtered = data.items.filter((i) => i._id !== id);
 
-    setSimilarItems(filtered.slice(0, 4));
-
-  } catch (error) {
-    console.log(error);
-  }
-};
+      setSimilarItems(filtered.slice(0, 4));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClaim = async () => {
     if (!claimMessage.trim()) {
@@ -173,8 +172,6 @@ function ItemDetails() {
               alt={item.title}
               className="main-photo"
             />
-
-            
           </div>
 
           {/* DESCRIPTION */}
@@ -295,8 +292,21 @@ function ItemDetails() {
               </button>
             )}
 
+            <button
+              className="message-btn"
+              onClick={() =>
+                navigate("/messages", {
+                  state: {
+                    item,
+                  },
+                })
+              }
+            >
+               Start Chat
+            </button>
+
             <button onClick={() => setShowContactModal(true)}>
-              Contact Owner
+              Send Mail
             </button>
 
             <button onClick={() => setShowQRModal(true)}>Download QR</button>
@@ -327,48 +337,27 @@ function ItemDetails() {
       </div>
 
       <section className="similar-section">
+        <div className="section-title">
+          <h2>Similar Items</h2>
 
-    <div className="section-title">
+          <Link to="/">View More</Link>
+        </div>
 
-        <h2>
-            Similar Items
-        </h2>
-
-        <Link to="/">
-            View More
-        </Link>
-
-    </div>
-
-    <div className="similar-grid">
-
-        {similarItems.map(item => (
-
+        <div className="similar-grid">
+          {similarItems.map((item) => (
             <ItemCard
-
-                key={item._id}
-
-                id={item._id}
-
-                title={item.title}
-
-                location={item.location}
-
-                date={new Date(item.date).toLocaleDateString()}
-
-                photoUrl={item.photoUrl}
-
-                type={item.type}
-
-                category={item.category}
-
+              key={item._id}
+              id={item._id}
+              title={item.title}
+              location={item.location}
+              date={new Date(item.date).toLocaleDateString()}
+              photoUrl={item.photoUrl}
+              type={item.type}
+              category={item.category}
             />
-
-        ))}
-
-    </div>
-
-</section>
+          ))}
+        </div>
+      </section>
 
       {/* MODALS */}
 

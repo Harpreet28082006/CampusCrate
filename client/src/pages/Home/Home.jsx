@@ -92,7 +92,7 @@ console.log("Total Items:", data.totalItems);
           🚀 CampusCrate Beta is now live for all college students.
         </div>
 
-        <button className="announcement-btn">Explore</button>
+        {/* <button className="announcement-btn">Explore</button> */}
       </div>
       <section className="hero">
         <div className="hero-content">
