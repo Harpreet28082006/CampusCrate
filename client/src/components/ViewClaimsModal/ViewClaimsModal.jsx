@@ -12,7 +12,7 @@ function ViewClaimsModal({ itemId, onClose }) {
   async function fetchClaims() {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/claims/item/${itemId}`,
+        `https://campuscrate-1vil.onrender.com/api/claims/item/${itemId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ function ViewClaimsModal({ itemId, onClose }) {
   async function approveClaim(id) {
     try {
       await axios.put(
-        `http://localhost:5000/api/claims/approve/${id}`,
+        `https://campuscrate-1vil.onrender.com/api/claims/approve/${id}`,
         {},
         {
           headers: {
@@ -55,7 +55,7 @@ function ViewClaimsModal({ itemId, onClose }) {
   async function rejectClaim(id) {
     try {
       await axios.put(
-        `http://localhost:5000/api/claims/reject/${id}`,
+        `https://campuscrate-1vil.onrender.com/api/claims/reject/${id}`,
         {},
         {
           headers: {

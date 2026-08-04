@@ -32,7 +32,7 @@ function Messages() {
   try {
 
     const { data } = await axios.get(
-      "http://localhost:5000/api/messages",
+      "https://campuscrate-1vil.onrender.com/api/messages",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ const fetchMessages = async (claimId) => {
 
     const { data } = await axios.get(
 
-      `http://localhost:5000/api/messages/${claimId}`,
+      `https://campuscrate-1vil.onrender.com/api/messages/${claimId}`,
 
       {
 
@@ -99,7 +99,7 @@ const sendMessage = async () => {
 
     await axios.post(
 
-      "http://localhost:5000/api/messages",
+      "https://campuscrate-1vil.onrender.com/api/messages",
 
       {
 

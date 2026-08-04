@@ -24,7 +24,7 @@ function MyItems() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/items/my-items",
+        "https://campuscrate-1vil.onrender.com/api/items/my-items",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ function MyItems() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:5000/api/items/${id}`, {
+      await axios.delete(`https://campuscrate-1vil.onrender.com/api/items/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +102,7 @@ function MyItems() {
       const token = localStorage.getItem("token");
 
       await axios.patch(
-        `http://localhost:5000/api/items/${id}/status`,
+        `https://campuscrate-1vil.onrender.com/api/items/${id}/status`,
         {},
         {
           headers: {

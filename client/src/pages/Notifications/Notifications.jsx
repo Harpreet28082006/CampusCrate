@@ -14,7 +14,7 @@ function Notifications() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/notifications",
+        "https://campuscrate-1vil.onrender.com/api/notifications",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ function Notifications() {
       const token = localStorage.getItem("token");
 
       await axios.patch(
-        `http://localhost:5000/api/notifications/${id}/read`,
+        `https://campuscrate-1vil.onrender.com/api/notifications/${id}/read`,
 
         {},
 

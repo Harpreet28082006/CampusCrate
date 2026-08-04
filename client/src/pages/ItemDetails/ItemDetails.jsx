@@ -29,7 +29,7 @@ function ItemDetails() {
 
   async function fetchItem() {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/items/${id}`);
+      const { data } = await axios.get(`https://campuscrate-1vil.onrender.com/api/items/${id}`);
 
       setItem(data.item);
       fetchSimilarItems(data.item.category);
@@ -43,7 +43,7 @@ function ItemDetails() {
   const fetchSimilarItems = async (category) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/items?category=${category}&limit=4`,
+        `https://campuscrate-1vil.onrender.com/api/items?category=${category}&limit=4`,
       );
 
       const filtered = data.items.filter((i) => i._id !== id);
@@ -66,7 +66,7 @@ function ItemDetails() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/claims",
+        "https://campuscrate-1vil.onrender.com/api/claims",
         {
           itemId: item._id,
           message: claimMessage,
@@ -99,7 +99,7 @@ function ItemDetails() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.patch(
-        `http://localhost:5000/api/items/${item._id}/status`,
+        `https://campuscrate-1vil.onrender.com/api/items/${item._id}/status`,
         {},
         {
           headers: {

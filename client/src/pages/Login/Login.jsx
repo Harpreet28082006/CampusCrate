@@ -54,7 +54,7 @@ function Login() {
       setLoading(true);
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://campuscrate-1vil.onrender.com/api/auth/login",
 
         {
           email,

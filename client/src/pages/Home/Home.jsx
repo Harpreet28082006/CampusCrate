@@ -57,7 +57,7 @@ function Home() {
       params.append("limit", 6);
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/items?${params.toString()}`,
+        `https://campuscrate-1vil.onrender.com/api/items?${params.toString()}`,
       );
       console.log("Items Returned:", data.items.length);
 console.log("Total Pages:", data.totalPages);

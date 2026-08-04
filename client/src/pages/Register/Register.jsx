@@ -86,7 +86,7 @@ function Register() {
 
       await axios.post(
 
-        "http://localhost:5000/api/auth/register",
+        "https://campuscrate-1vil.onrender.com/api/auth/register",
 
         {
 

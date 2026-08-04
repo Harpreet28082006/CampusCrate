@@ -28,7 +28,7 @@ if (claimMessage.length < 20) {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/claims",
+        "https://campuscrate-1vil.onrender.com/api/claims",
         {
           itemId,
           message: claimMessage,
