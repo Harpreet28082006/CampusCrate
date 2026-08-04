@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import HeroImage from "../../assets/illustrations/image.png";
+import HeroImage from "../../assets/Illustrations/image.png";
 import "./Home.css";
 
-import EmptySearch from "../../assets/illustrations/empty-search.svg";
+import EmptySearch from "../../assets/Illustrations/empty-search.svg";
 
 import Button from "../../components/Button/Button";
 import ItemCard from "../../components/ItemCard/ItemCard";
