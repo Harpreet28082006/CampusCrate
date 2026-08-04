@@ -227,3 +227,15 @@ Example:
 ## License
 
 This project was developed for educational purposes as part of a MERN Stack development project.
+
+---
+
+## 🚀 Live Demo
+
+### Frontend
+
+https://campus-crate-iota.vercel.app
+
+### Backend
+
+https://campuscrate-1vil.onrender.com
