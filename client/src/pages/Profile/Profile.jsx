@@ -89,9 +89,12 @@ function Profile() {
             </div>
           </div>
         </div>
-        <button className="edit-btn" onClick={() => navigate("/edit-profile")}>
+
+        {/* <button className="edit-btn" onClick={() => navigate("/edit-profile")}>
           Edit Profile
-        </button>{" "}
+        </button> */}
+        
+        {" "}
       </div>
 
       <div className="stats-section">
