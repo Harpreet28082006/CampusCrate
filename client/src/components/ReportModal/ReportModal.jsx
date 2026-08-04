@@ -30,7 +30,7 @@ function ReportModal({ itemId, onClose }) {
       setLoading(true);
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/reports",
+        "https://campuscrate-1vil.onrender.com/api/reports",
         {
           itemId,
           reason,

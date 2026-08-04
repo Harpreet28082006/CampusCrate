@@ -1,0 +1,327 @@
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:235px;
+    height:100vh;
+    background:#FBFAF8;
+    border-right:1px solid #EEE8DF;
+    padding:22px 18px;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    z-index:999;
+}
+
+.sidebar::-webkit-scrollbar{
+    width:4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#D8D8D8;
+    border-radius:20px;
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.sidebar-logo{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+
+}
+
+.logo-box{
+
+    width:48px;
+    height:48px;
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#8B5CF6,#6D5DF6);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:22px;
+
+    box-shadow:0 10px 25px rgba(109,93,246,.25);
+
+}
+
+.sidebar-logo h2{
+
+    font-size:21px;
+    color:#2F2F2F;
+    margin:0;
+    font-weight:700;
+
+}
+
+.sidebar-logo p{
+
+    margin-top:2px;
+    color:#9B948A;
+    font-size:12px;
+
+}
+
+/* ==========================================
+   CREATE REPORT CARD
+========================================== */
+.create-card{
+    background:#ffffff;
+    border-radius:18px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+    margin-bottom:28px;
+    border:1px solid #F1ECE5;
+}
+
+.create-text{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+.create-card h4{
+    margin:0;
+    font-size:15px;
+    font-weight:700;
+    color:#2E2E2E;
+}
+
+.create-card span{
+    font-size:13px;
+    color:#8C8176;
+}
+
+.create-card button{
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#000000;
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    flex-shrink:0;
+
+}
+
+.create-card button:hover{
+
+    transform:scale(1.08);
+
+}
+
+/* ==========================================
+   MENU
+========================================== */
+
+.sidebar-menu{
+
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    text-decoration:none;
+
+    color:#666;
+
+    padding:12px 14px;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+    font-size:14px;
+    font-weight:600;
+
+}
+
+.sidebar-menu a svg{
+
+    width:18px;
+    height:18px;
+
+}
+
+.sidebar-menu a:hover{
+
+    background:#F2ECE4;
+    color:#8B5E3C;
+
+}
+
+.sidebar-menu a.active{
+
+    background:#EFE6DB;
+
+    color:#8B5E3C;
+
+    font-weight:700;
+
+}
+
+/* ==========================================
+   PREMIUM
+========================================== */
+
+.premium-card{
+
+    margin-top:auto;
+
+    background:linear-gradient(180deg,#FFF8F1,#F9EFE3);
+
+    border-radius:20px;
+
+    padding:18px;
+
+    text-align:center;
+
+    border:1px solid #EFE2D2;
+
+}
+
+.premium-card svg{
+
+    color:#C58B39;
+
+    margin-bottom:10px;
+
+}
+
+.premium-card h3{
+
+    margin-bottom:8px;
+
+    color:#3C3026;
+
+    font-size:17px;
+
+}
+
+.premium-card p{
+
+    color:#84776B;
+
+    font-size:12px;
+
+    line-height:1.6;
+
+    margin-bottom:16px;
+
+}
+
+.premium-card button{
+
+    width:100%;
+
+    height:44px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#8B5E3C;
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.premium-card button:hover{
+
+    background:#A46E45;
+
+}
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+.logout-side{
+
+    margin-top:14px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#FFF2F2;
+    border:2px solid rgb(226, 146, 146);
+
+    color:#E14A4A;
+
+    font-weight:600;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    padding:20px 10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.logout-side:hover{
+
+    background:#FFE4E4;
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:992px){
+
+.sidebar{
+
+left:-100%;
+
+}
+
+}

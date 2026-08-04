@@ -1,7 +1,9 @@
+import ItemCard from "../../components/ItemCard/ItemCard";
 import ReportModal from "../../components/ReportModal/ReportModal";
 import QRModal from "../../components/QRModal/QRModal";
 import ClaimModal from "../../components/ClaimModal/ClaimModal";
 import ContactOwnerModal from "../../components/ContactOwnerModal/ContactOwnerModal";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -21,18 +23,36 @@ function ItemDetails() {
   const [showContactModal, setShowContactModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
+  const navigate = useNavigate();
+
+  const [similarItems, setSimilarItems] = useState([]);
 
   async function fetchItem() {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/items/${id}`);
+      const { data } = await axios.get(`https://campuscrate-1vil.onrender.com/api/items/${id}`);
 
       setItem(data.item);
+      fetchSimilarItems(data.item.category);
     } catch (error) {
       console.error("Error fetching item:", error);
     } finally {
       setLoading(false);
     }
   }
+
+  const fetchSimilarItems = async (category) => {
+    try {
+      const { data } = await axios.get(
+        `https://campuscrate-1vil.onrender.com/api/items?category=${category}&limit=4`,
+      );
+
+      const filtered = data.items.filter((i) => i._id !== id);
+
+      setSimilarItems(filtered.slice(0, 4));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClaim = async () => {
     if (!claimMessage.trim()) {
@@ -46,7 +66,7 @@ function ItemDetails() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/claims",
+        "https://campuscrate-1vil.onrender.com/api/claims",
         {
           itemId: item._id,
           message: claimMessage,
@@ -79,7 +99,7 @@ function ItemDetails() {
       const token = localStorage.getItem("token");
 
       const { data } = await axios.patch(
-        `http://localhost:5000/api/items/${item._id}/status`,
+        `https://campuscrate-1vil.onrender.com/api/items/${item._id}/status`,
         {},
         {
           headers: {
@@ -126,74 +146,173 @@ function ItemDetails() {
         ← Back
       </Link>
 
-      <div className="details-card">
-        <img
-          src={item.photoUrl || "https://placehold.co/500x350?text=No+Image"}
-          alt={item.title}
-        />
+      <div className="item-layout">
+        {/* ================= LEFT ================= */}
 
-        <div className="details-content">
-          <h1>{item.title}</h1>
+        <div className="left-section">
+          <div className="image-card">
+            <div className="image-top">
+              <div>
+                <h1>{item.title}</h1>
 
-          <p>
-            <strong>Category:</strong> {item.category}
-          </p>
+                <p>
+                  {item.category} • {item.type}
+                </p>
+              </div>
 
-          <p>
-            <strong>Type:</strong> {item.type}
-          </p>
-
-          <p>
-            <strong>Location:</strong> {item.location}
-          </p>
-
-          <p>
-            <strong>Date:</strong> {new Date(item.date).toLocaleDateString()}
-          </p>
-
-          <p>
-            <strong>Status:</strong> {item.status}
-          </p>
-
-          <p>
-            <strong>Description:</strong>
-            <br />
-            {item.description}
-          </p>
-
-          {item.status !== "returned" ? (
-            <button
-              className="claim-btn"
-              onClick={() => setShowClaimModal(true)}
-            >
-              Claim Item
-            </button>
-          ) : (
-            <div className="returned-message">
-              <h3>
-                This item has already been returned and is no longer available
-                for claims.
-              </h3>
+              <span className={`status-pill ${item.status}`}>
+                {item.status}
+              </span>
             </div>
-          )}
 
-          <div className="details-actions">
+            <img
+              src={
+                item.photoUrl || "https://placehold.co/800x600?text=No+Image"
+              }
+              alt={item.title}
+              className="main-photo"
+            />
+          </div>
+
+          {/* DESCRIPTION */}
+
+          <div className="description-card">
+            <h3>Description</h3>
+
+            <p>{item.description}</p>
+          </div>
+
+          {/* DETAILS */}
+
+          <div className="details-grid">
+            <div>
+              <small>Category</small>
+
+              <h4>{item.category}</h4>
+            </div>
+
+            <div>
+              <small>Location</small>
+
+              <h4>{item.location}</h4>
+            </div>
+
+            <div>
+              <small>Date</small>
+
+              <h4>{new Date(item.date).toLocaleDateString()}</h4>
+            </div>
+
+            <div>
+              <small>Status</small>
+
+              <h4>{item.status}</h4>
+            </div>
+          </div>
+
+          {/* TIMELINE */}
+
+          <div className="timeline-card">
+            <h3>Item Timeline</h3>
+
+            <div className="timeline">
+              <div className="timeline-item completed">
+                <span></span>
+
+                <div>
+                  <h5>Posted</h5>
+
+                  <p>{new Date(item.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              <div
+                className={`timeline-item ${
+                  item.status !== "active" ? "completed" : ""
+                }`}
+              >
+                <span></span>
+
+                <div>
+                  <h5>Claimed</h5>
+                </div>
+              </div>
+
+              <div
+                className={`timeline-item ${
+                  item.status === "returned" ? "completed" : ""
+                }`}
+              >
+                <span></span>
+
+                <div>
+                  <h5>Returned</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ================= RIGHT ================= */}
+
+        <div className="right-section">
+          {/* OWNER */}
+
+          <div className="owner-card">
+            <h3>Owner Details</h3>
+
+            <div className="owner-info">
+              <div className="owner-avatar">
+                {item.postedBy?.name?.charAt(0)}
+              </div>
+
+              <div>
+                <h4>{item.postedBy?.name}</h4>
+
+                <p>{item.postedBy?.email}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* ACTIONS */}
+
+          <div className="actions-card">
+            <h3>Actions</h3>
+
+            {item.status !== "returned" ? (
+              <button
+                className="primary-btn"
+                onClick={() => setShowClaimModal(true)}
+              >
+                Claim Item
+              </button>
+            ) : (
+              <button disabled className="disabled-btn">
+                Already Returned
+              </button>
+            )}
+
             <button
-              className="contact-btn"
-              onClick={() => setShowContactModal(true)}
+              className="message-btn"
+              onClick={() =>
+                navigate("/messages", {
+                  state: {
+                    item,
+                  },
+                })
+              }
             >
-              Contact Owner
+               Start Chat
             </button>
 
-            <button
-              className="report-btn"
-              onClick={() => setShowReportModal(true)}
-            >
+            <button onClick={() => setShowContactModal(true)}>
+              Send Mail
+            </button>
+
+            <button onClick={() => setShowQRModal(true)}>Download QR</button>
+
+            <button onClick={() => setShowReportModal(true)}>
               Report Item
-            </button>
-
-            <button className="qr-btn" onClick={() => setShowQRModal(true)}>
-              View QR
             </button>
 
             {item.status !== "returned" && (
@@ -203,34 +322,73 @@ function ItemDetails() {
             )}
           </div>
 
-          {showClaimModal && (
-            <ClaimModal
-              itemId={item._id}
-              claimMessage={claimMessage}
-              setClaimMessage={setClaimMessage}
-              handleClaim={handleClaim}
-              claimLoading={claimLoading}
-              onClose={() => setShowClaimModal(false)}
-            />
-          )}
-          {showContactModal && (
-            <ContactOwnerModal
-              owner={item.postedBy}
-              closeModal={() => setShowContactModal(false)}
-            />
-          )}
-          {showReportModal && (
-            <ReportModal
-              itemId={item._id}
-              onClose={() => setShowReportModal(false)}
-            />
-          )}
+          {/* QR */}
 
-          {showQRModal && (
-            <QRModal item={item} onClose={() => setShowQRModal(false)} />
-          )}
+          <div className="qr-card">
+            <h3>QR Code</h3>
+
+            <p>Scan to identify this item.</p>
+
+            <img src={item.qrCode} alt="QR" className="qr-image" />
+
+            <button onClick={() => setShowQRModal(true)}>Download QR</button>
+          </div>
         </div>
       </div>
+
+      <section className="similar-section">
+        <div className="section-title">
+          <h2>Similar Items</h2>
+
+          <Link to="/">View More</Link>
+        </div>
+
+        <div className="similar-grid">
+          {similarItems.map((item) => (
+            <ItemCard
+              key={item._id}
+              id={item._id}
+              title={item.title}
+              location={item.location}
+              date={new Date(item.date).toLocaleDateString()}
+              photoUrl={item.photoUrl}
+              type={item.type}
+              category={item.category}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* MODALS */}
+
+      {showClaimModal && (
+        <ClaimModal
+          itemId={item._id}
+          claimMessage={claimMessage}
+          setClaimMessage={setClaimMessage}
+          handleClaim={handleClaim}
+          claimLoading={claimLoading}
+          onClose={() => setShowClaimModal(false)}
+        />
+      )}
+
+      {showContactModal && (
+        <ContactOwnerModal
+          owner={item.postedBy}
+          closeModal={() => setShowContactModal(false)}
+        />
+      )}
+
+      {showReportModal && (
+        <ReportModal
+          itemId={item._id}
+          onClose={() => setShowReportModal(false)}
+        />
+      )}
+
+      {showQRModal && (
+        <QRModal item={item} onClose={() => setShowQRModal(false)} />
+      )}
     </section>
   );
 }

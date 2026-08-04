@@ -1,12 +1,13 @@
 const Claim = require("../models/Claim");
 const Item = require("../models/Item");
 const Notification = require("../models/Notification");
-
+const User = require("../models/User");
 const createClaim = async (req, res) => {
   try {
     const { itemId, message } = req.body;
 
     const item = await Item.findById(itemId);
+    const claimant = await User.findById(req.user.id);
 
     if (!item) {
       return res.status(404).json({
@@ -47,7 +48,7 @@ console.log("Creating notification...");
     await Notification.create({
       user: item.postedBy,
       title: "New Claim Received",
-      message: `${req.user.name} has submitted a claim for your item "${item.title}".`,
+      message: `${claimant.name} has submitted a claim for your item "${item.title}".`,
       type: "claim",
       relatedItem: item._id,
       relatedClaim: claim._id,

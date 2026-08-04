@@ -38,7 +38,7 @@ const EditProfile = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get("http://localhost:5000/api/users/profile", {
+      const res = await axios.get("https://campuscrate-1vil.onrender.com/api/users/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +102,7 @@ const EditProfile = () => {
       data.append("photo", selectedImage);
 
       const res = await axios.put(
-        "http://localhost:5000/api/users/profile/photo",
+        "https://campuscrate-1vil.onrender.com/api/users/profile/photo",
         data,
         {
           headers: {
@@ -131,7 +131,7 @@ const EditProfile = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        "http://localhost:5000/api/users/profile",
+        "https://campuscrate-1vil.onrender.com/api/users/profile",
         {
           name: formData.name,
           college: formData.college,
@@ -166,7 +166,7 @@ const EditProfile = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.put(
-        "http://localhost:5000/api/users/change-password",
+        "https://campuscrate-1vil.onrender.com/api/users/change-password",
         passwordData,
         {
           headers: {

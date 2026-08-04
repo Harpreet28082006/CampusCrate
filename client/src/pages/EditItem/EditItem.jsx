@@ -27,7 +27,7 @@ function EditItem() {
   async function fetchItem() {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/items/${id}`
+        `https://campuscrate-1vil.onrender.com/api/items/${id}`
       );
 
       setFormData({
@@ -63,7 +63,7 @@ function EditItem() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/items/${id}`,
+        `https://campuscrate-1vil.onrender.com/api/items/${id}`,
         formData,
         {
           headers: {

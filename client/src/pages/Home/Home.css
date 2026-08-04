@@ -52,7 +52,182 @@
   flex-wrap: wrap;
 }
 
+/* ===========================
+   ANNOUNCEMENT BAR
+=========================== */
 
+.announcement-bar{
+    background:#F8F2EA;
+    border:1px solid #E9DED2;
+    border-radius:16px;
+    padding:14px 22px;
+    margin-bottom:28px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.announcement-text{
+    color:#6A5A4D;
+    font-size:14px;
+    font-weight:500;
+}
+
+.announcement-btn{
+    background:#8B5E3C;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.25s;
+}
+
+.announcement-btn:hover{
+    background:#A16C46;
+}
+
+/* ===========================
+   HERO
+=========================== */
+
+.hero{
+    background:#FFFDFB;
+    border:1px solid #EFE4D7;
+    border-radius:28px;
+    padding:40px  30px 10px ;
+    margin-bottom:30px;
+}
+
+.hero-content{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:60px;
+}
+
+.hero-left{
+    flex:1;
+}
+
+.hero-right{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.hero-right img{
+    width:100%;
+    max-width:470px;
+}
+
+/* ===========================
+   HERO TEXT
+=========================== */
+
+.hero-badge{
+    display:inline-block;
+    background:#F6EFE8;
+    color:#8B5E3C;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:22px;
+}
+
+.hero h1{
+    font-size:58px;
+    line-height:1.08;
+    color:#2F241D;
+    margin-bottom:24px;
+}
+
+.hero h1 span{
+    color:#8B5E3C;
+}
+
+.hero p{
+    font-size:17px;
+    color:#6C655F;
+    line-height:1.8;
+    max-width:560px;
+    margin-bottom:32px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:18px;
+    margin-bottom:38px;
+}
+
+/* ===========================
+   HERO STATS
+=========================== */
+
+.hero-stats{
+    display:flex;
+    gap:26px;
+}
+
+.hero-stats div{
+    background:#FCF7F1;
+    border:1px solid #EEE3D8;
+    border-radius:18px;
+    padding:10px 24px 1px 18px;
+    min-width:120px;
+}
+
+.hero-stats h3{
+    margin:0;
+    color:#2F241D;
+    font-size:22px;
+}
+
+.hero-stats p{
+    margin-top:8px;
+    margin-bottom:0;
+    font-size:12px;
+    color:#8B8179;
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:992px){
+
+.hero{
+    padding:32px;
+}
+
+.hero-content{
+    flex-direction:column;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:42px;
+}
+
+.hero p{
+    margin:auto;
+    margin-bottom:26px;
+}
+
+.hero-buttons{
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.hero-stats{
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+}
 
 
 
@@ -333,7 +508,7 @@ width:100%;
 =========================== */
 
 .items-section {
-  padding: 40px 5% 0px 5%;
+  padding: 0px 5% 0px 5%;
 }
 
 /* ===========================
@@ -472,11 +647,26 @@ font-size:15px;
     color:var(--text-light);
 
 }
-.items-grid{
+.items-list{
 
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:32px;
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:22px;
+
+margin-top:35px;
+
+}
+
+@media(max-width:1000px){
+
+.items-list{
+
+grid-template-columns:1fr;
+
+}
+
 }
 
 /* ===========================
@@ -643,6 +833,56 @@ grid-template-columns:1fr 1fr;
     padding: 60px 5%;
   }
 
+}
+
+
+
+/* pagination section */
+
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin:55px 0 10px;
+}
+
+.pagination button{
+
+    min-width:46px;
+    height:46px;
+
+    border-radius:14px;
+    border:1px solid #ECE4DA;
+
+    background:#fff;
+    color:#6B5A4A;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+}
+
+.pagination button:hover{
+    background:#F7F2EC;
+    border-color:#8B5E3C;
+    color:#8B5E3C;
+}
+
+.pagination button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+.active-page{
+    background:#8B5E3C !important;
+    color:#fff !important;
+    border-color:#8B5E3C !important;
+
+    box-shadow:0 12px 24px rgba(139,94,60,.22);
 }
 
 /* ===========================
